@@ -1,28 +1,26 @@
 state("Playtime_Prototype4-Win64-Shipping")
 {
-    // PlayerBP_C pointer location : 0x426E5C8, 0x238, 0x240;
+    // PlayerBP_C pointer location : 0x0426E5C8, 0x178, 0x240, 0x0;
     // UWorld pointer location : 0x42FEBD8, 0x018, 0x010, 0x068, 0x020;
 
-    bool hasLeftHand                : 0x0426E5C8, 0x238, 0x240, 0x70A;  // The hasLeftHand flag is set when the left hand is picked up
-    bool hasRightHand               : 0x0426E5C8, 0x238, 0x240, 0x709;  // The hasRightHand flag is set when the right hand is picked up
-    bool isGameReady                : 0x0426E5C8, 0x238, 0x240, 0x870;  // The isGameReady flag is set as soon as the player actor is controllable
+    bool hasLeftHand                : 0x0426E5C8, 0x178, 0x240, 0x70A;  // The hasLeftHand flag is set when the left hand is picked up
+    bool hasRightHand               : 0x0426E5C8, 0x178, 0x240, 0x709;  // The hasRightHand flag is set when the right hand is picked up
+    bool isGameReady                : 0x0426E5C8, 0x178, 0x240, 0x870;  // The isGameReady flag is set as soon as the player actor is controllable
 
-    int inventorySize               : 0x0426E5C8, 0x238, 0x240, 0x868;  // The current size of the players inventory
+    int inventorySize               : 0x0426E5C8, 0x178, 0x240, 0x868;  // The current size of the players inventory
 
     // I couldn't find a valid item id, so instead each inventory slot is checked using it's display name
-    string32 slot1DisplayName       : 0x0426E5C8, 0x238, 0x240, 0x860, 0x008, 0x0;
-    string32 slot2DisplayName       : 0x0426E5C8, 0x238, 0x240, 0x860, 0x030, 0x0;
-    string32 slot3DisplayName       : 0x0426E5C8, 0x238, 0x240, 0x860, 0x058, 0x0;
-    string32 slot4DisplayName       : 0x0426E5C8, 0x238, 0x240, 0x860, 0x080, 0x0;
-    string32 slot5DisplayName       : 0x0426E5C8, 0x238, 0x240, 0x860, 0x0A8, 0x0;
-    string32 slot6DisplayName       : 0x0426E5C8, 0x238, 0x240, 0x860, 0x0D0, 0x0;
-    string32 slot7DisplayName       : 0x0426E5C8, 0x238, 0x240, 0x860, 0x0F8, 0x0;
-    string32 slot8DisplayName       : 0x0426E5C8, 0x238, 0x240, 0x860, 0x118, 0x0;
-    string32 slot9DisplayName       : 0x0426E5C8, 0x238, 0x240, 0x860, 0x148, 0x0;
-    string32 slot10DisplayName      : 0x0426E5C8, 0x238, 0x240, 0x860, 0x170, 0x0;
-    string32 slot11DisplayName      : 0x0426E5C8, 0x238, 0x240, 0x860, 0x198, 0x0;
-
-    bool isHuggyRevealed            : 0x04303360, 0x030, 0x0A8, 0x320, 0x020, 0x508;
+    string32 slot1DisplayName       : 0x0426E5C8, 0x178, 0x240, 0x860, 0x008, 0x0;
+    string32 slot2DisplayName       : 0x0426E5C8, 0x178, 0x240, 0x860, 0x030, 0x0;
+    string32 slot3DisplayName       : 0x0426E5C8, 0x178, 0x240, 0x860, 0x058, 0x0;
+    string32 slot4DisplayName       : 0x0426E5C8, 0x178, 0x240, 0x860, 0x080, 0x0;
+    string32 slot5DisplayName       : 0x0426E5C8, 0x178, 0x240, 0x860, 0x0A8, 0x0;
+    string32 slot6DisplayName       : 0x0426E5C8, 0x178, 0x240, 0x860, 0x0D0, 0x0;
+    string32 slot7DisplayName       : 0x0426E5C8, 0x178, 0x240, 0x860, 0x0F8, 0x0;
+    string32 slot8DisplayName       : 0x0426E5C8, 0x178, 0x240, 0x860, 0x118, 0x0;
+    string32 slot9DisplayName       : 0x0426E5C8, 0x178, 0x240, 0x860, 0x148, 0x0;
+    string32 slot10DisplayName      : 0x0426E5C8, 0x178, 0x240, 0x860, 0x170, 0x0;
+    string32 slot11DisplayName      : 0x0426E5C8, 0x178, 0x240, 0x860, 0x198, 0x0;
 
     // PoppyDoorCase_C pointer location : 0x04303360, 0x580, 0x018, 0x020, 0x098, 0x780;
 
@@ -30,7 +28,7 @@ state("Playtime_Prototype4-Win64-Shipping")
      * I also could find a bool anywhere in any anim_graphs or timelines that was being set when the flickering timeline started to play
      * But the timeline completion percentage updates from 0 to 1 so we use that instead
      */ 
-    int isDoorOpened               : 0x04303360, 0x580, 0x018, 0x020, 0x098, 0x780, 0x278, 0x0BC;
+    int isEndCaseDoorOpen               : 0x04303360, 0x580, 0x018, 0x020, 0x098, 0x780, 0x278, 0x0BC;
 }
 
 init
@@ -46,7 +44,7 @@ init
     vars.hasPickedUpLeftHand = false;
     vars.hasPickedUpRightHand = false;
 
-    Dictionary<string, Tuple<string, string>> itemNames = new Dictionary<string, Tuple<string, string>>() {
+    vars.itemNames = new Dictionary<string, Tuple<string, string>>() {
         // Vhs tapes
         { "vhslobby", Tuple.Create("Lobby VHS", "Insert Lobby VHS") },
         { "vhssecurity", Tuple.Create("Security VHS", "Insert Security VHS") },
@@ -59,7 +57,7 @@ init
         
         // Keys which start the right hand crane in the storage area
         { "blue", Tuple.Create("Blue Key", "") },
-        { "red", Tuple.Create("Red Key", "" },
+        { "red", Tuple.Create("Red Key", "") },
         { "green", Tuple.Create("Green Key", "") },
         { "yellow", Tuple.Create("Yellow Key", "") },
 
@@ -87,7 +85,7 @@ init
 
     vars.SplitOnInventoryPickup = (Func<string, bool>) ( (displayName) =>  {
         Tuple<string, string> itemSettingsKeys;
-        if (!itemNames.TryGetValue(displayName.ToLower(), out itemSettingsKeys) || !settings[itemSettingsKeys.Item1]) {
+        if (!vars.itemNames.TryGetValue(displayName.ToLower(), out itemSettingsKeys) || !settings[itemSettingsKeys.Item1]) {
             // Don't split if the item doesn't exist in the splittable items, or isn't enabled in the settings 
             return false;
         }
@@ -113,7 +111,6 @@ startup
     settings.Add("Right Hand", true);
     settings.Add("Scanner Doll", true);
     settings.Add("Insert Scanner Doll", true);
-    settings.Add("Huggy Wuggy Chase", true);
 
 
     // All Tapes Settings
@@ -134,6 +131,7 @@ start
     if (current.isGameReady && current.isGameReady != old.isGameReady) {
         vars.hasPickedUpLeftHand = false;
         vars.hasPickedUpRightHand = false;
+        vars.currentInventory = new List<string>();
         return true;
     }
 }
@@ -158,15 +156,8 @@ split
         return true;
     }
 
-    if (settings["Huggy Wuggy Chase"] && !old.isHuggyRevealed && current.isHuggyRevealed) {
-        if (vars.debugSplits) {
-            print("Huggy Wuggy Chase");
-        }
-
-        return true;
-    }
-
-    if (old.isDoorOpened < current.isDoorOpened) {
+    // TODO: Only do the final split after door is completely open
+    if (old.isEndCaseDoorOpen < current.isEndCaseDoorOpen) {
         if (vars.debugSplits) {
             print("Poppy Case Door Opened");
         }
@@ -177,28 +168,34 @@ split
     if (current.inventorySize > old.inventorySize) {
         // Add the item to the player inventory
         string newItemName = (string) vars.inventorySlots[current.inventorySize - 1];
-        vars.currentInventory.Add(newItemName)
 
-        // The player has picked something up, find out what it is and split based on display name
-        if (vars.SplitOnInventoryPickup(newItemName)) {
-            return true;
+        if (String.IsNullOrEmpty(newItemName)) {
+            print("Item Name string was empty!");
+        } else {
+            print("Picked up new item " + newItemName);
+            vars.currentInventory.Add(newItemName);
+
+            // The player has picked something up, find out what it is and split based on display name
+            if (vars.SplitOnInventoryPickup(newItemName)) {
+                return true;
+            }
         }
-    } else if (currentInventory.inventorySize < old.inventorySize) {
+    } else if (current.inventorySize < old.inventorySize) {
         // This is dumb, but I couldn't find valid fields for when the item placements happen so we just need to find what item was removed from inventory by name
-        for (int currentInventoryIndex = 0; currentInventoryIndex < vars.currentInventory.Length; currentInventoryIndex++) {
+        for (int currentInventoryIndex = 0; currentInventoryIndex < vars.currentInventory.Count; currentInventoryIndex++) {
             string currentInventorySlotName = vars.currentInventory[currentInventoryIndex];
 
             for (int checkSlotIndex = 0; checkSlotIndex < vars.inventorySlots.Length; checkSlotIndex++) {
-                if (currentInventorySlotName == vars.inventorySlots[currentInventorySlotName]) {
+                if (currentInventorySlotName == ((string) vars.inventorySlots[checkSlotIndex])) {
                     // This item is still in the inventory
                     continue;
                 }
 
                 // Clean up the removed item
-                vars.currentInventory.RemoveAtIndex(currentInventoryIndex);
+                vars.currentInventory.RemoveAt(currentInventoryIndex);
 
                 Tuple<string, string> itemSettingsKeys;
-                if (!itemNames.TryGetValue(currentInventorySlotName.ToLower(), out itemSettingsKeys) || !settings[itemSettingsKeys.Item2]) {
+                if (!vars.itemNames.TryGetValue(currentInventorySlotName.ToLower(), out itemSettingsKeys) || !settings[itemSettingsKeys.Item2]) {
                     // Don't split if the item doesn't exist in the splittable items, or isn't enabled in the settings 
                     return false;
                 }
