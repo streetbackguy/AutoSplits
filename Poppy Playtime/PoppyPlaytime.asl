@@ -1,26 +1,26 @@
 state("Playtime_Prototype4-Win64-Shipping")
 {
-    // PlayerBP_C pointer location : 0x0426E5C8, 0x178, 0x240, 0x0;
+    // PlayerBP_C pointer location : 0x0426E5C8, 0x020, 0x240, 0x0;
     // UWorld pointer location : 0x42FEBD8, 0x018, 0x010, 0x068, 0x020;
 
-    bool hasLeftHand                : 0x0426E5C8, 0x178, 0x240, 0x70A;  // The hasLeftHand flag is set when the left hand is picked up
-    bool hasRightHand               : 0x0426E5C8, 0x178, 0x240, 0x709;  // The hasRightHand flag is set when the right hand is picked up
-    bool isGameReady                : 0x0426E5C8, 0x178, 0x240, 0x870;  // The isGameReady flag is set as soon as the player actor is controllable
+    bool hasLeftHand                : 0x0426E5C8, 0x020, 0x240, 0x70A;  // The hasLeftHand flag is set when the left hand is picked up
+    bool hasRightHand               : 0x0426E5C8, 0x020, 0x240, 0x709;  // The hasRightHand flag is set when the right hand is picked up
+    bool isGameReady                : 0x0426E5C8, 0x020, 0x240, 0x870;  // The isGameReady flag is set as soon as the player actor is controllable
 
-    int inventorySize               : 0x0426E5C8, 0x178, 0x240, 0x868;  // The current size of the players inventory
+    int inventorySize               : 0x0426E5C8, 0x020, 0x240, 0x868;  // The current size of the players inventory
 
     // I couldn't find a valid item id, so instead each inventory slot is checked using it's display name
-    string32 slot1DisplayName       : 0x0426E5C8, 0x178, 0x240, 0x860, 0x008, 0x0;
-    string32 slot2DisplayName       : 0x0426E5C8, 0x178, 0x240, 0x860, 0x030, 0x0;
-    string32 slot3DisplayName       : 0x0426E5C8, 0x178, 0x240, 0x860, 0x058, 0x0;
-    string32 slot4DisplayName       : 0x0426E5C8, 0x178, 0x240, 0x860, 0x080, 0x0;
-    string32 slot5DisplayName       : 0x0426E5C8, 0x178, 0x240, 0x860, 0x0A8, 0x0;
-    string32 slot6DisplayName       : 0x0426E5C8, 0x178, 0x240, 0x860, 0x0D0, 0x0;
-    string32 slot7DisplayName       : 0x0426E5C8, 0x178, 0x240, 0x860, 0x0F8, 0x0;
-    string32 slot8DisplayName       : 0x0426E5C8, 0x178, 0x240, 0x860, 0x118, 0x0;
-    string32 slot9DisplayName       : 0x0426E5C8, 0x178, 0x240, 0x860, 0x148, 0x0;
-    string32 slot10DisplayName      : 0x0426E5C8, 0x178, 0x240, 0x860, 0x170, 0x0;
-    string32 slot11DisplayName      : 0x0426E5C8, 0x178, 0x240, 0x860, 0x198, 0x0;
+    string32 slot1DisplayName       : 0x0426E5C8, 0x020, 0x240, 0x860, 0x008, 0x0;
+    string32 slot2DisplayName       : 0x0426E5C8, 0x020, 0x240, 0x860, 0x030, 0x0;
+    string32 slot3DisplayName       : 0x0426E5C8, 0x020, 0x240, 0x860, 0x058, 0x0;
+    string32 slot4DisplayName       : 0x0426E5C8, 0x020, 0x240, 0x860, 0x080, 0x0;
+    string32 slot5DisplayName       : 0x0426E5C8, 0x020, 0x240, 0x860, 0x0A8, 0x0;
+    string32 slot6DisplayName       : 0x0426E5C8, 0x020, 0x240, 0x860, 0x0D0, 0x0;
+    string32 slot7DisplayName       : 0x0426E5C8, 0x020, 0x240, 0x860, 0x0F8, 0x0;
+    string32 slot8DisplayName       : 0x0426E5C8, 0x020, 0x240, 0x860, 0x118, 0x0;
+    string32 slot9DisplayName       : 0x0426E5C8, 0x020, 0x240, 0x860, 0x148, 0x0;
+    string32 slot10DisplayName      : 0x0426E5C8, 0x020, 0x240, 0x860, 0x170, 0x0;
+    string32 slot11DisplayName      : 0x0426E5C8, 0x020, 0x240, 0x860, 0x198, 0x0;
 
     // PoppyDoorCase_C pointer location : 0x04303360, 0x580, 0x018, 0x020, 0x098, 0x780;
 
@@ -28,7 +28,9 @@ state("Playtime_Prototype4-Win64-Shipping")
      * I also could find a bool anywhere in any anim_graphs or timelines that was being set when the flickering timeline started to play
      * But the timeline completion percentage updates from 0 to 1 so we use that instead
      */ 
-    int isEndCaseDoorOpen               : 0x04303360, 0x580, 0x018, 0x020, 0x098, 0x780, 0x278, 0x0BC;
+
+     // TODO: Check Player -> Controller -> PlayerCameraManager -> PP Settings
+    int isEndCaseDoorOpen           : 0x04303360, 0x580, 0x018, 0x020, 0x098, 0x780, 0x278, 0x0BC;
 }
 
 init
@@ -65,20 +67,33 @@ init
         { "scannerdoll", Tuple.Create("Scanner Doll", "Insert Scanner Doll") },
     };
 
-    // Story references to all inventory slots
-    vars.inventorySlots = new object[] {
-        current.slot1DisplayName,
-        current.slot2DisplayName,
-        current.slot3DisplayName,
-        current.slot4DisplayName,
-        current.slot5DisplayName,
-        current.slot6DisplayName,
-        current.slot7DisplayName,
-        current.slot8DisplayName,
-        current.slot9DisplayName,
-        current.slot10DisplayName,
-        current.slot11DisplayName,
-    };
+    vars.inventorySlotCount = 11;
+
+    vars.GetInventorySlotDisplayName = (Func<int, string>) ( (slotIndex) => {
+        if (slotIndex == 0) {
+            return current.slot1DisplayName;
+        } else if (slotIndex == 1) {
+            return current.slot2DisplayName;
+        } else if (slotIndex == 2) {
+            return current.slot3DisplayName;
+        } else if (slotIndex == 3) {
+            return current.slot4DisplayName;
+        } else if (slotIndex == 4) {
+            return current.slot5DisplayName;
+        } else if (slotIndex == 5) {
+            return current.slot6DisplayName;
+        } else if (slotIndex == 6) {
+            return current.slot7DisplayName;
+        } else if (slotIndex == 7) {
+            return current.slot8DisplayName;
+        } else if (slotIndex == 8) {
+            return current.slot9DisplayName;
+        } else if (slotIndex == 9) {
+            return current.slot10DisplayName;
+        } else {
+            return current.slot11DisplayName;
+        }
+    });
 
     // We need to keep track of the current inventory state due to a level streaming player prefab bug
     vars.currentInventory = new List<string>();
@@ -157,7 +172,7 @@ split
     }
 
     // TODO: Only do the final split after door is completely open
-    if (old.isEndCaseDoorOpen < current.isEndCaseDoorOpen) {
+    if (old.isEndCaseDoorOpen < current.isEndCaseDoorOpen && current.isEndCaseDoorOpen >= 1) {
         if (vars.debugSplits) {
             print("Poppy Case Door Opened");
         }
@@ -167,12 +182,11 @@ split
 
     if (current.inventorySize > old.inventorySize) {
         // Add the item to the player inventory
-        string newItemName = (string) vars.inventorySlots[current.inventorySize - 1];
+        string newItemName = vars.GetInventorySlotDisplayName(current.inventorySize - 1);
 
         if (String.IsNullOrEmpty(newItemName)) {
-            print("Item Name string was empty!");
+            print("Item Name string was empty! Current Inventory Size: " + current.inventorySize);
         } else {
-            print("Picked up new item " + newItemName);
             vars.currentInventory.Add(newItemName);
 
             // The player has picked something up, find out what it is and split based on display name
@@ -185,8 +199,9 @@ split
         for (int currentInventoryIndex = 0; currentInventoryIndex < vars.currentInventory.Count; currentInventoryIndex++) {
             string currentInventorySlotName = vars.currentInventory[currentInventoryIndex];
 
-            for (int checkSlotIndex = 0; checkSlotIndex < vars.inventorySlots.Length; checkSlotIndex++) {
-                if (currentInventorySlotName == ((string) vars.inventorySlots[checkSlotIndex])) {
+            for (int checkSlotIndex = 0; checkSlotIndex < vars.inventorySlotCount; checkSlotIndex++) {
+                string checkName = vars.GetInventorySlotDisplayName(checkSlotIndex);
+                if (currentInventorySlotName == checkName) {
                     // This item is still in the inventory
                     continue;
                 }
