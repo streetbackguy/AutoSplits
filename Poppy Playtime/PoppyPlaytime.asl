@@ -1,26 +1,27 @@
 state("Playtime_Prototype4-Win64-Shipping")
 {
-    // PlayerBP_C pointer location : 0x0426E5C8, 0x020, 0x240, 0x0;
-    // UWorld pointer location : 0x42FEBD8, 0x018, 0x010, 0x068, 0x020;
+    // This is the address of a timer which updates only while the player is active and the game isn't paused.
+    double gameTimer                : 0x4111230;
 
-    bool hasLeftHand                : 0x0426E5C8, 0x020, 0x240, 0x70A;  // The hasLeftHand flag is set when the left hand is picked up
-    bool hasRightHand               : 0x0426E5C8, 0x020, 0x240, 0x709;  // The hasRightHand flag is set when the right hand is picked up
-    bool isGameReady                : 0x0426E5C8, 0x020, 0x240, 0x870;  // The isGameReady flag is set as soon as the player actor is controllable
+    // PlayerBP_C pointer location : 0x042EC120, 0x030, 0x02A0, 0x0;
+    bool hasLeftHand                : 0x042EC120, 0x030, 0x02A0, 0x70A;  // The hasLeftHand flag is set when the left hand is picked up
+    bool hasRightHand               : 0x042EC120, 0x030, 0x02A0, 0x709;  // The hasRightHand flag is set when the right hand is picked up
+    bool isGameReady                : 0x042EC120, 0x030, 0x02A0, 0x870;  // The isGameReady flag is set as soon as the player actor is controllable
 
-    int inventorySize               : 0x0426E5C8, 0x020, 0x240, 0x868;  // The current size of the players inventory
+    int inventorySize               : 0x042EC120, 0x030, 0x02A0, 0x868;  // The current size of the players inventory
 
     // I couldn't find a valid item id, so instead each inventory slot is checked using it's display name
-    string32 slot1DisplayName       : 0x0426E5C8, 0x020, 0x240, 0x860, 0x008, 0x0;
-    string32 slot2DisplayName       : 0x0426E5C8, 0x020, 0x240, 0x860, 0x030, 0x0;
-    string32 slot3DisplayName       : 0x0426E5C8, 0x020, 0x240, 0x860, 0x058, 0x0;
-    string32 slot4DisplayName       : 0x0426E5C8, 0x020, 0x240, 0x860, 0x080, 0x0;
-    string32 slot5DisplayName       : 0x0426E5C8, 0x020, 0x240, 0x860, 0x0A8, 0x0;
-    string32 slot6DisplayName       : 0x0426E5C8, 0x020, 0x240, 0x860, 0x0D0, 0x0;
-    string32 slot7DisplayName       : 0x0426E5C8, 0x020, 0x240, 0x860, 0x0F8, 0x0;
-    string32 slot8DisplayName       : 0x0426E5C8, 0x020, 0x240, 0x860, 0x118, 0x0;
-    string32 slot9DisplayName       : 0x0426E5C8, 0x020, 0x240, 0x860, 0x148, 0x0;
-    string32 slot10DisplayName      : 0x0426E5C8, 0x020, 0x240, 0x860, 0x170, 0x0;
-    string32 slot11DisplayName      : 0x0426E5C8, 0x020, 0x240, 0x860, 0x198, 0x0;
+    string32 slot1DisplayName       : 0x042EC120, 0x030, 0x02A0, 0x860, 0x008, 0x0;
+    string32 slot2DisplayName       : 0x042EC120, 0x030, 0x02A0, 0x860, 0x030, 0x0;
+    string32 slot3DisplayName       : 0x042EC120, 0x030, 0x02A0, 0x860, 0x058, 0x0;
+    string32 slot4DisplayName       : 0x042EC120, 0x030, 0x02A0, 0x860, 0x080, 0x0;
+    string32 slot5DisplayName       : 0x042EC120, 0x030, 0x02A0, 0x860, 0x0A8, 0x0;
+    string32 slot6DisplayName       : 0x042EC120, 0x030, 0x02A0, 0x860, 0x0D0, 0x0;
+    string32 slot7DisplayName       : 0x042EC120, 0x030, 0x02A0, 0x860, 0x0F8, 0x0;
+    string32 slot8DisplayName       : 0x042EC120, 0x030, 0x02A0, 0x860, 0x118, 0x0;
+    string32 slot9DisplayName       : 0x042EC120, 0x030, 0x02A0, 0x860, 0x148, 0x0;
+    string32 slot10DisplayName      : 0x042EC120, 0x030, 0x02A0, 0x860, 0x170, 0x0;
+    string32 slot11DisplayName      : 0x042EC120, 0x030, 0x02A0, 0x860, 0x198, 0x0;
 
     // PoppyDoorCase_C pointer location : 0x04303360, 0x580, 0x018, 0x020, 0x098, 0x780;
 
@@ -31,12 +32,15 @@ state("Playtime_Prototype4-Win64-Shipping")
 
      // TODO: Check Player -> Controller -> PlayerCameraManager -> PP Settings
     int isEndCaseDoorOpen           : 0x04303360, 0x580, 0x018, 0x020, 0x098, 0x780, 0x278, 0x0BC;
+
+    // UWorld pointer location : 0x42FEBD8, 0x018, 0x010, 0x068, 0x020;
+    int uWorldFNameIndex            : 0x42FEBD8, 0x018, 0x010, 0x068, 0x020, 0x018;
 }
 
 init
 {
     // Set to true to get debug messages on splits, false otherwise
-    vars.debugSplits = true;
+    vars.debugSplits = false;
 
     /*
      * While moving around the level the hand flags are flipped at certain places. 
@@ -45,6 +49,28 @@ init
      */
     vars.hasPickedUpLeftHand = false;
     vars.hasPickedUpRightHand = false;
+
+    /*
+     * Same thing for the different inventory items. At certain level streaming triggers it seems
+     * to recreate the player prefab from a previous checkpoint. This adds and then removes items from inventory the next frame
+     */
+    vars.hasPickedUpSecurityVhs = false;
+    vars.hasInsertedSecurityVhs = false;
+
+    vars.hasPickedUpLobbyVhs = false;
+    vars.hasInsertedLobbyVhs = false;
+
+    vars.hasPickedUpStorageVhs = false;
+    vars.hasInsertedStorageVhs = false;
+    
+    vars.hasPickedUpMachineVhs = false;
+    vars.hasInsertedMachineVhs = false;
+    
+    vars.hasPickedUpSiloVhs = false;
+    vars.hasInsertedSiloVhs = false;
+
+    vars.hasPickedUpScannerDoll = false;
+    vars.hasInsertedScannerDoll = false;
 
     vars.itemNames = new Dictionary<string, Tuple<string, string>>() {
         // Vhs tapes
@@ -95,6 +121,9 @@ init
         }
     });
 
+    // The number of keys the player has collected
+    vars.storageKeyCount = 0;
+
     // We need to keep track of the current inventory state due to a level streaming player prefab bug
     vars.currentInventory = new List<string>();
 
@@ -111,6 +140,28 @@ init
 
         return true;
     });
+
+    vars.ResetRunPersistentVariables = (Action) (() => {
+        vars.hasPickedUpLeftHand = false;
+        vars.hasPickedUpRightHand = false;
+
+        vars.hasPickedUpSecurityVhs = false;
+        vars.hasInsertedSecurityVhs = false;
+        vars.hasPickedUpLobbyVhs = false;
+        vars.hasInsertedLobbyVhs = false;
+        vars.hasPickedUpStorageVhs = false;
+        vars.hasInsertedStorageVhs = false;
+        vars.hasPickedUpMachineVhs = false;
+        vars.hasInsertedMachineVhs = false;
+        vars.hasPickedUpSiloVhs = false;
+        vars.hasInsertedSiloVhs = false;
+
+        vars.hasPickedUpScannerDoll = false;
+        vars.hasInsertedScannerDoll = false;
+
+        vars.storageKeyCount = 0;
+        vars.currentInventory = new List<string>();
+    });
 }
 
 startup
@@ -123,10 +174,13 @@ startup
     settings.Add("Insert Security VHS", true);
     settings.Add("Left Hand", true);
     settings.Add("Simon Room Key", true, "Power Room Key");
+    settings.Add("Blue Key", true, "Storage Key 1");
+    settings.Add("Red Key", true, "Storage Key 2");
+    settings.Add("Green Key", true, "Storage Key 3");
+    settings.Add("Yellow Key", true, "Storage Key 4");
     settings.Add("Right Hand", true);
     settings.Add("Scanner Doll", true);
     settings.Add("Insert Scanner Doll", true);
-
 
     // All Tapes Settings
     settings.Add("All Tapes", false, "All Tapes Category Settings.", "Chapter 1");
@@ -143,10 +197,8 @@ startup
 
 start
 {
-    if (current.isGameReady && current.isGameReady != old.isGameReady) {
-        vars.hasPickedUpLeftHand = false;
-        vars.hasPickedUpRightHand = false;
-        vars.currentInventory = new List<string>();
+    if (current.isGameReady && current.isGameReady != old.isGameReady && current.uWorldFNameIndex == 803957) {
+        vars.ResetRunPersistentVariables();
         return true;
     }
 }
@@ -186,13 +238,74 @@ split
 
         if (String.IsNullOrEmpty(newItemName)) {
             print("Item Name string was empty! Current Inventory Size: " + current.inventorySize);
-        } else {
-            vars.currentInventory.Add(newItemName);
+        } else if (!vars.currentInventory.Contains(newItemName)) { // We need to check that we aren't adding duplicates due to the level streaming issues
+            switch (newItemName.ToLower()) {
+                case "blue":
+                case "red":
+                case "green":
+                case "yellow":
+                    // Keep track of the number of keys picked up to avoid right hand splits happening before they possibly can
+                    vars.storageKeyCount++;
+                    break;
+                case "vhssecurity":
+                    if (!vars.hasPickedUpSecurityVhs) {
+                        vars.hasPickedUpSecurityVhs = true;
+                    } else {
+                        newItemName = null;
+                    }
 
-            // The player has picked something up, find out what it is and split based on display name
-            if (vars.SplitOnInventoryPickup(newItemName)) {
-                return true;
+                    break;
+                case "vhslobby":
+                    if (!vars.hasPickedUpLobbyVhs) {
+                        vars.hasPickedUpLobbyVhs = true;
+                    } else {
+                        newItemName = null;
+                    }
+
+                    break;
+                case "vhsstorage":
+                    if (!vars.hasPickedUpStorageVhs) {
+                        vars.hasPickedUpStorageVhs = true;
+                    } else {
+                        newItemName = null;
+                    }
+
+                    break;
+                case "vhsmachine":
+                    if (!vars.hasPickedUpMachineVhs) {
+                        vars.hasPickedUpMachineVhs = true;
+                    } else {
+                        newItemName = null;
+                    }
+
+                    break;
+                case "vhssilo":
+                    if (!vars.hasPickedUpSiloVhs) {
+                        vars.hasPickedUpSiloVhs = true;
+                    } else {
+                        newItemName = null;
+                    }
+
+                    break;
+                case "scannerdoll":
+                    if (!vars.hasPickedUpScannerDoll) {
+                        vars.hasPickedUpScannerDoll = true;
+                    } else {
+                        newItemName = null;
+                    }
+
+                    break;
             }
+
+            // Check if we picked up a valid item, or this is a level streaming bug
+            if (!String.IsNullOrEmpty(newItemName)) {
+                vars.currentInventory.Add(newItemName);
+
+                // The player has picked something up, find out what it is and split based on display name
+                if (vars.SplitOnInventoryPickup(newItemName)) {
+                    return true;
+                }
+            }            
         }
     } else if (current.inventorySize < old.inventorySize) {
         // This is dumb, but I couldn't find valid fields for when the item placements happen so we just need to find what item was removed from inventory by name
@@ -209,8 +322,56 @@ split
                 // Clean up the removed item
                 vars.currentInventory.RemoveAt(currentInventoryIndex);
 
+                // Make sure the inventory isn't getting messed up values during level streaming
+                switch (currentInventorySlotName.ToLower()) {
+                    case "vhssecurity":
+                        if (vars.hasInsertedSecurityVhs) {
+                            return false;
+                        } 
+                        
+                        vars.hasInsertedSecurityVhs = true;
+                        break;
+                    case "vhslobby":
+                        if (vars.hasInsertedLobbyVhs) {
+                            return false;
+                        } 
+                        
+                        vars.hasInsertedLobbyVhs = true;
+                        break;
+                    case "vhsstorage":
+                        if (vars.hasInsertedStorageVhs) {
+                            return false;
+                        } 
+                        
+                        vars.hasInsertedStorageVhs = true;
+                        break;
+                    case "vhsmachine":
+                        if (vars.hasInsertedMachineVhs) {
+                            return false;
+                        } 
+                        
+                        vars.hasInsertedMachineVhs = true;
+                        break;
+                    case "vhssilo":
+                        if (vars.hasInsertedSiloVhs) {
+                            return false;
+                        } 
+                    
+                        vars.hasInsertedSiloVhs = true;
+                        break;
+                    case "scannerdoll":
+                        if (vars.hasInsertedScannerDoll) {
+                            return false;
+                        } 
+                        
+                        vars.hasInsertedScannerDoll = true;
+                        break;
+                }
+
                 Tuple<string, string> itemSettingsKeys;
-                if (!vars.itemNames.TryGetValue(currentInventorySlotName.ToLower(), out itemSettingsKeys) || !settings[itemSettingsKeys.Item2]) {
+                if (!vars.itemNames.TryGetValue(currentInventorySlotName.ToLower(), out itemSettingsKeys) 
+                    || String.IsNullOrEmpty(itemSettingsKeys.Item2) || !settings[itemSettingsKeys.Item2]
+                ) {
                     // Don't split if the item doesn't exist in the splittable items, or isn't enabled in the settings 
                     return false;
                 }
@@ -225,7 +386,15 @@ split
     }
 }
 
+isLoading
+{
+    return current.gameTimer == old.gameTimer;
+}
+
 reset
 {
-    // TODO: Reset when going back to menu
+    // 803705 is the fname index of the main menu map
+    if (current.uWorldFNameIndex != old.uWorldFNameIndex && current.uWorldFNameIndex == 803705) {
+        return true;
+    }
 }
