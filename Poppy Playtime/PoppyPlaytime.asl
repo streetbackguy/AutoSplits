@@ -1,5 +1,8 @@
 state("Playtime_Prototype4-Win64-Shipping")
 {
+    int isLoaded                   : 0x3E54898; // Thanks to Mossfis for finding this memory address!
+    int isPaused                   : 0x04303360, 0x118, 0x2B8;
+
     // This is the address of a timer which updates only while the player is active and the game isn't paused.
     double gameTimer                : 0x4111230;
 
@@ -388,7 +391,7 @@ split
 
 isLoading
 {
-    return current.gameTimer == old.gameTimer;
+    return current.isLoaded == 0 || current.isPaused != 0;
 }
 
 reset
