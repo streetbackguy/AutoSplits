@@ -200,8 +200,21 @@ startup
 
 start
 {
-    if (current.isGameReady && current.isGameReady != old.isGameReady && current.uWorldFNameIndex == 803957) {
+    if (current.isGameReady && current.isLoaded == 1 && current.uWorldFNameIndex == 803957) {
         vars.ResetRunPersistentVariables();
+        return true;
+    }
+}
+
+isLoading
+{
+    return current.isLoaded == 0 || current.isPaused != 0;
+}
+
+reset
+{
+    // 803705 is the fname index of the main menu map
+    if (current.uWorldFNameIndex != old.uWorldFNameIndex && current.uWorldFNameIndex == 803705) {
         return true;
     }
 }
@@ -386,18 +399,5 @@ split
                 return true;
             }
         }
-    }
-}
-
-isLoading
-{
-    return current.isLoaded == 0 || current.isPaused != 0;
-}
-
-reset
-{
-    // 803705 is the fname index of the main menu map
-    if (current.uWorldFNameIndex != old.uWorldFNameIndex && current.uWorldFNameIndex == 803705) {
-        return true;
     }
 }
