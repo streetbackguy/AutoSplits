@@ -28,13 +28,8 @@ state("Playtime_Prototype4-Win64-Shipping")
 
     // PoppyDoorCase_C pointer location : 0x04303360, 0x580, 0x018, 0x020, 0x098, 0x780;
 
-    /*
-     * I also could find a bool anywhere in any anim_graphs or timelines that was being set when the flickering timeline started to play
-     * But the timeline completion percentage updates from 0 to 1 so we use that instead
-     */ 
-
-     // TODO: Check Player -> Controller -> PlayerCameraManager -> PP Settings
-    int isEndCaseDoorOpen           : 0x04303360, 0x580, 0x018, 0x020, 0x098, 0x780, 0x278, 0x0BC;
+    // As soon as the door case opening animation timeline has completed we can split
+    int isEndCaseDoorOpening        : 0x04303360, 0x580, 0x018, 0x020, 0x098, 0x780, 0x278, 0x0B1;
 
     // UWorld pointer location : 0x42FEBD8, 0x018, 0x010, 0x068, 0x020;
     int uWorldFNameIndex            : 0x42FEBD8, 0x018, 0x010, 0x068, 0x020, 0x018;
@@ -240,7 +235,7 @@ split
     }
 
     // TODO: Only do the final split after door is completely open
-    if (old.isEndCaseDoorOpen < current.isEndCaseDoorOpen && current.isEndCaseDoorOpen >= 1) {
+    if (old.isEndCaseDoorOpening == 4 && current.isEndCaseDoorOpening == 0) {
         if (vars.debugSplits) {
             print("Poppy Case Door Opened");
         }
