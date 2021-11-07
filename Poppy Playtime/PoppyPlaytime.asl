@@ -3,9 +3,6 @@ state("Playtime_Prototype4-Win64-Shipping")
     int isLoaded                   : 0x3E54898; // Thanks to Mossfis for finding this memory address!
     int isPaused                   : 0x04303360, 0x118, 0x2B8;
 
-    // This is the address of a timer which updates only while the player is active and the game isn't paused.
-    double gameTimer                : 0x4111230;
-
     // PlayerBP_C pointer location : 0x042EC120, 0x030, 0x02A0, 0x0;
     bool hasLeftHand                : 0x042EC120, 0x030, 0x02A0, 0x70A;  // The hasLeftHand flag is set when the left hand is picked up
     bool hasRightHand               : 0x042EC120, 0x030, 0x02A0, 0x709;  // The hasRightHand flag is set when the right hand is picked up
@@ -33,6 +30,40 @@ state("Playtime_Prototype4-Win64-Shipping")
 
     // UWorld pointer location : 0x42FEBD8, 0x018, 0x010, 0x068, 0x020;
     int uWorldFNameIndex            : 0x42FEBD8, 0x018, 0x010, 0x068, 0x020, 0x018;
+}
+
+state("UE4Game-Win64-Shipping")
+{
+    int isLoaded                   : 0x4033228; // Thanks to Mossfis for finding this memory address!
+    int isPaused                   : 0x044ED220, 0x8A8;
+
+    // PlayerBP_C pointer location : 0x044D9A20, 0x030, 0x0260, 0x0;
+    bool hasLeftHand                : 0x044D9A20, 0x030, 0x0260, 0x70A;  // The hasLeftHand flag is set when the left hand is picked up
+    bool hasRightHand               : 0x044D9A20, 0x030, 0x0260, 0x709;  // The hasRightHand flag is set when the right hand is picked up
+    bool isGameReady                : 0x044D9A20, 0x030, 0x0260, 0x870;  // The isGameReady flag is set as soon as the player actor is controllable
+
+    int inventorySize               : 0x044D9A20, 0x030, 0x0260, 0x868;  // The current size of the players inventory
+
+    // I couldn't find a valid item id, so instead each inventory slot is checked using it's display name
+    string32 slot1DisplayName       : 0x044D9A20, 0x030, 0x0260, 0x860, 0x008, 0x0;
+    string32 slot2DisplayName       : 0x044D9A20, 0x030, 0x0260, 0x860, 0x030, 0x0;
+    string32 slot3DisplayName       : 0x044D9A20, 0x030, 0x0260, 0x860, 0x058, 0x0;
+    string32 slot4DisplayName       : 0x044D9A20, 0x030, 0x0260, 0x860, 0x080, 0x0;
+    string32 slot5DisplayName       : 0x044D9A20, 0x030, 0x0260, 0x860, 0x0A8, 0x0;
+    string32 slot6DisplayName       : 0x044D9A20, 0x030, 0x0260, 0x860, 0x0D0, 0x0;
+    string32 slot7DisplayName       : 0x044D9A20, 0x030, 0x0260, 0x860, 0x0F8, 0x0;
+    string32 slot8DisplayName       : 0x044D9A20, 0x030, 0x0260, 0x860, 0x118, 0x0;
+    string32 slot9DisplayName       : 0x044D9A20, 0x030, 0x0260, 0x860, 0x148, 0x0;
+    string32 slot10DisplayName      : 0x044D9A20, 0x030, 0x0260, 0x860, 0x170, 0x0;
+    string32 slot11DisplayName      : 0x044D9A20, 0x030, 0x0260, 0x860, 0x198, 0x0;
+
+    // PoppyDoorCase_C pointer location : 0x044F0AE0, 0x138, 0x020, 0x098, 0x708, 0x0;
+
+    // As soon as the door case opening animation timeline has completed we can split
+    int isEndCaseDoorOpening        : 0x044F0AE0, 0x138, 0x020, 0x098, 0x708, 0x278, 0x0B1;
+
+    // UWorld pointer location : 0x044F0AE0, 0x0;
+    int uWorldFNameIndex            : 0x044F0AE0, 0x018;
 }
 
 init
@@ -160,6 +191,30 @@ init
         vars.storageKeyCount = 0;
         vars.currentInventory = new List<string>();
     });
+
+    vars.GetFNamePool = (Func<IntPtr>) (() => {	
+        var scanner = new SignatureScanner(game, modules.First().BaseAddress, (int)modules.First().ModuleMemorySize);
+        var pattern = new SigScanTarget("74 09 48 8D 15 ?? ?? ?? ?? EB 16");
+        var gameOffset = scanner.Scan(pattern);
+        if (gameOffset == IntPtr.Zero) return IntPtr.Zero;
+        int offset = game.ReadValue<int>((IntPtr)gameOffset+0x5);
+        return (IntPtr)gameOffset+offset+0x9;
+	});
+
+    vars.FNamePool = vars.GetFNamePool();
+
+    vars.GetNameFromFName = (Func<int, int, string>) ( (key,partial) => {
+        int chunkOffset = key >> 16;
+        int nameOffset = (ushort)key;
+        IntPtr namePoolChunk = memory.ReadValue<IntPtr>((IntPtr)vars.FNamePool + (chunkOffset+2) * 0x8);
+        Int16 nameEntry = game.ReadValue<Int16>((IntPtr)namePoolChunk + 2 * nameOffset);
+        int nameLength = nameEntry >> 6;
+        if (partial == 0) {
+            return game.ReadString((IntPtr)namePoolChunk + 2 * nameOffset + 2, nameLength);
+        } else {
+            return game.ReadString((IntPtr)namePoolChunk + 2 * nameOffset + 2, nameLength)+"_"+partial.ToString();
+        }
+	});
 }
 
 startup
@@ -195,7 +250,7 @@ startup
 
 start
 {
-    if (current.isGameReady && current.isLoaded == 1 && current.uWorldFNameIndex == 803957) {
+    if (current.isGameReady && current.isLoaded == 1 && vars.GetNameFromFName(current.uWorldFNameIndex, 0).ToLower() == "pp_finallevel") {
         vars.ResetRunPersistentVariables();
         return true;
     }
@@ -209,7 +264,7 @@ isLoading
 reset
 {
     // 803705 is the fname index of the main menu map
-    if (current.uWorldFNameIndex != old.uWorldFNameIndex && current.uWorldFNameIndex == 803705) {
+    if (current.uWorldFNameIndex != old.uWorldFNameIndex && vars.GetNameFromFName(current.uWorldFNameIndex, 0).ToLower() == "mainmenu") {
         return true;
     }
 }
