@@ -382,6 +382,11 @@ split
                 string checkName = vars.GetInventorySlotDisplayName(checkSlotIndex);
                 if (currentInventorySlotName == checkName) {
                     // This item is still in the inventory
+                    break;
+                }
+
+                if (checkSlotIndex < vars.inventorySlotCount - 1) {
+                    // We need to check every inventory slot
                     continue;
                 }
 
