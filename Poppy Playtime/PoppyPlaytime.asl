@@ -1,9 +1,24 @@
 state("Playtime_Prototype4-Win64-Shipping")
 {
-    int isLoaded                   : 0x3E54898; // Thanks to Mossfis for finding this memory address!
-    int isPaused                   : 0x04303360, 0x118, 0x2B8;
+    int isLoaded                    : 0x3E54898; // Thanks to Mossfis for finding this memory address!
+    int isPaused                    : 0x04303360, 0x118, 0x2B8;
 
     // PlayerBP_C pointer location : 0x042EC120, 0x030, 0x02A0, 0x0;
+
+    /*
+     * These will potentially be used in the start function to only start the timer when the player has moved the camera or location.
+     * The problem is that while the prefab spawns in it is lerped to the map start over a number of frames while the screen is black
+     * So we can't just set a start position/rotation and be done with it
+     *
+     * float cameraPitch                : 0x042EC120, 0x030, 0x02A0, 0x578, 0x128;  // The camera pitch relative to the player
+     * float cameraYaw                  : 0x042EC120, 0x030, 0x02A0, 0x578, 0x12C;  // The camera yaw relative to the player
+     * float cameraRoll                 : 0x042EC120, 0x030, 0x02A0, 0x578, 0x130;  // The camera roll relative to the player
+     *
+     * float playerChangeInPosX         : 0x042EC120, 0x030, 0x02A0, 0x674;  // The change in the players x position from the previous frame
+     * float playerChangeInPosY         : 0x042EC120, 0x030, 0x02A0, 0x678;  // The change in the players y position from the previous frame
+     * float playerChangeInPosZ         : 0x042EC120, 0x030, 0x02A0, 0x67c;  // The change in the players z position from the previous frame
+     */
+
     bool hasLeftHand                : 0x042EC120, 0x030, 0x02A0, 0x70A;  // The hasLeftHand flag is set when the left hand is picked up
     bool hasRightHand               : 0x042EC120, 0x030, 0x02A0, 0x709;  // The hasRightHand flag is set when the right hand is picked up
     bool isGameReady                : 0x042EC120, 0x030, 0x02A0, 0x870;  // The isGameReady flag is set as soon as the player actor is controllable
@@ -34,10 +49,21 @@ state("Playtime_Prototype4-Win64-Shipping")
 
 state("UE4Game-Win64-Shipping")
 {
-    int isLoaded                   : 0x4033228; // Thanks to Mossfis for finding this memory address!
-    int isPaused                   : 0x044ED220, 0x8A8;
+    int isLoaded                    : 0x4033228; // Thanks to Mossfis for finding this memory address!
+    int isPaused                    : 0x044ED220, 0x8A8;
 
     // PlayerBP_C pointer location : 0x044D9A20, 0x030, 0x0260, 0x0;
+
+    /*
+     * float cameraPitch               : 0x044D9A20, 0x030, 0x0260, 0x578, 0x128;  // The camera pitch relative to the player
+     * float cameraYaw                 : 0x044D9A20, 0x030, 0x0260, 0x578, 0x12C;  // The camera yaw relative to the player
+     * float cameraRoll                : 0x044D9A20, 0x030, 0x0260, 0x578, 0x130;  // The camera roll relative to the player
+     *
+     * float playerChangeInPosX        : 0x044D9A20, 0x030, 0x0260, 0x674;  // The change in the players x position from the previous frame
+     * float playerChangeInPosY        : 0x044D9A20, 0x030, 0x0260, 0x678;  // The change in the players y position from the previous frame
+     * float playerChangeInPosZ        : 0x044D9A20, 0x030, 0x0260, 0x67c;  // The change in the players z position from the previous frame
+     */
+
     bool hasLeftHand                : 0x044D9A20, 0x030, 0x0260, 0x70A;  // The hasLeftHand flag is set when the left hand is picked up
     bool hasRightHand               : 0x044D9A20, 0x030, 0x0260, 0x709;  // The hasRightHand flag is set when the right hand is picked up
     bool isGameReady                : 0x044D9A20, 0x030, 0x0260, 0x870;  // The isGameReady flag is set as soon as the player actor is controllable
@@ -57,10 +83,10 @@ state("UE4Game-Win64-Shipping")
     string32 slot10DisplayName      : 0x044D9A20, 0x030, 0x0260, 0x860, 0x170, 0x0;
     string32 slot11DisplayName      : 0x044D9A20, 0x030, 0x0260, 0x860, 0x198, 0x0;
 
-    // PoppyDoorCase_C pointer location : 0x044F0AE0, 0x138, 0x020, 0x098, 0x708, 0x0;
+    // PoppyDoorCase_C pointer location : 0x044F0AE0, 0x138, 0x028, 0x098, 0x708, 0x0;
 
     // As soon as the door case opening animation timeline has completed we can split
-    int isEndCaseDoorOpening        : 0x044F0AE0, 0x138, 0x020, 0x098, 0x708, 0x278, 0x0B1;
+    int isEndCaseDoorOpening        : 0x044F0AE0, 0x138, 0x028, 0x098, 0x708, 0x278, 0x0B1;
 
     // UWorld pointer location : 0x044F0AE0, 0x0;
     int uWorldFNameIndex            : 0x044F0AE0, 0x018;
