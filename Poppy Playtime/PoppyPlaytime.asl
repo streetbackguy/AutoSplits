@@ -1,23 +1,44 @@
+state("Poppy_Playtime-Win64-Shipping")
+{
+    int isLoaded                    : 0x3E52898;
+    int isPaused                    : 0x04314320, 0x058, 0x060, 0x0BC;
+
+    // PlayerBP_C pointer location : 0x042F4378, 0x0, 0x0A0, 0x0;
+
+    bool hasLeftHand                : 0x042F4378, 0x0, 0x0A0, 0x70A;  // The hasLeftHand flag is set when the left hand is picked up
+    bool hasRightHand               : 0x042F4378, 0x0, 0x0A0, 0x709;  // The hasRightHand flag is set when the right hand is picked up
+    bool isGameReady                : 0x042F4378, 0x0, 0x0A0, 0x870;  // The isGameReady flag is set as soon as the player actor is controllable
+
+    int inventorySize               : 0x042F4378, 0x0, 0x0A0, 0x868;  // The current size of the players inventory
+
+    // I couldn't find a valid item id, so instead each inventory slot is checked using it's display name
+    string32 slot1DisplayName       : 0x042F4378, 0x0, 0x0A0, 0x860, 0x008, 0x0;
+    string32 slot2DisplayName       : 0x042F4378, 0x0, 0x0A0, 0x860, 0x030, 0x0;
+    string32 slot3DisplayName       : 0x042F4378, 0x0, 0x0A0, 0x860, 0x058, 0x0;
+    string32 slot4DisplayName       : 0x042F4378, 0x0, 0x0A0, 0x860, 0x080, 0x0;
+    string32 slot5DisplayName       : 0x042F4378, 0x0, 0x0A0, 0x860, 0x0A8, 0x0;
+    string32 slot6DisplayName       : 0x042F4378, 0x0, 0x0A0, 0x860, 0x0D0, 0x0;
+    string32 slot7DisplayName       : 0x042F4378, 0x0, 0x0A0, 0x860, 0x0F8, 0x0;
+    string32 slot8DisplayName       : 0x042F4378, 0x0, 0x0A0, 0x860, 0x118, 0x0;
+    string32 slot9DisplayName       : 0x042F4378, 0x0, 0x0A0, 0x860, 0x148, 0x0;
+    string32 slot10DisplayName      : 0x042F4378, 0x0, 0x0A0, 0x860, 0x170, 0x0;
+    string32 slot11DisplayName      : 0x042F4378, 0x0, 0x0A0, 0x860, 0x198, 0x0;
+
+    // PoppyDoorCase_C pointer location : 0x04301360, 0x088, 0x008, 0x128, 0x098, 0x760, 0x0;
+
+    // As soon as the door case opening animation timeline has completed we can split
+    int isEndCaseDoorOpening        : 0x04301360, 0x088, 0x008, 0x128, 0x098, 0x760, 0x278, 0x0B1;
+
+    // UWorld pointer location : 0x04301360, 0x0;
+    int uWorldFNameIndex            : 0x04301360, 0x018;
+}
+
 state("Playtime_Prototype4-Win64-Shipping")
 {
     int isLoaded                    : 0x3E54898; // Thanks to Mossfis for finding this memory address!
     int isPaused                    : 0x04303360, 0x118, 0x2B8;
 
     // PlayerBP_C pointer location : 0x042EC120, 0x030, 0x02A0, 0x0;
-
-    /*
-     * These will potentially be used in the start function to only start the timer when the player has moved the camera or location.
-     * The problem is that while the prefab spawns in it is lerped to the map start over a number of frames while the screen is black
-     * So we can't just set a start position/rotation and be done with it
-     *
-     * float cameraPitch                : 0x042EC120, 0x030, 0x02A0, 0x578, 0x128;  // The camera pitch relative to the player
-     * float cameraYaw                  : 0x042EC120, 0x030, 0x02A0, 0x578, 0x12C;  // The camera yaw relative to the player
-     * float cameraRoll                 : 0x042EC120, 0x030, 0x02A0, 0x578, 0x130;  // The camera roll relative to the player
-     *
-     * float playerChangeInPosX         : 0x042EC120, 0x030, 0x02A0, 0x674;  // The change in the players x position from the previous frame
-     * float playerChangeInPosY         : 0x042EC120, 0x030, 0x02A0, 0x678;  // The change in the players y position from the previous frame
-     * float playerChangeInPosZ         : 0x042EC120, 0x030, 0x02A0, 0x67c;  // The change in the players z position from the previous frame
-     */
 
     bool hasLeftHand                : 0x042EC120, 0x030, 0x02A0, 0x70A;  // The hasLeftHand flag is set when the left hand is picked up
     bool hasRightHand               : 0x042EC120, 0x030, 0x02A0, 0x709;  // The hasRightHand flag is set when the right hand is picked up
@@ -53,16 +74,6 @@ state("UE4Game-Win64-Shipping")
     int isPaused                    : 0x044ED220, 0x8A8;
 
     // PlayerBP_C pointer location : 0x044D9A20, 0x030, 0x0260, 0x0;
-
-    /*
-     * float cameraPitch               : 0x044D9A20, 0x030, 0x0260, 0x578, 0x128;  // The camera pitch relative to the player
-     * float cameraYaw                 : 0x044D9A20, 0x030, 0x0260, 0x578, 0x12C;  // The camera yaw relative to the player
-     * float cameraRoll                : 0x044D9A20, 0x030, 0x0260, 0x578, 0x130;  // The camera roll relative to the player
-     *
-     * float playerChangeInPosX        : 0x044D9A20, 0x030, 0x0260, 0x674;  // The change in the players x position from the previous frame
-     * float playerChangeInPosY        : 0x044D9A20, 0x030, 0x0260, 0x678;  // The change in the players y position from the previous frame
-     * float playerChangeInPosZ        : 0x044D9A20, 0x030, 0x0260, 0x67c;  // The change in the players z position from the previous frame
-     */
 
     bool hasLeftHand                : 0x044D9A20, 0x030, 0x0260, 0x70A;  // The hasLeftHand flag is set when the left hand is picked up
     bool hasRightHand               : 0x044D9A20, 0x030, 0x0260, 0x709;  // The hasRightHand flag is set when the right hand is picked up
