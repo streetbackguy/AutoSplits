@@ -1,7 +1,7 @@
 state("Poppy_Playtime-Win64-Shipping")
 {
     int isLoaded                    : 0x3E52898;
-    int isPaused                    : 0x04314320, 0x058, 0x060, 0x0BC;
+    int isPaused                    : 0x042D6550, 0x020, 0x018, 0x060, 0x0BC;
 
     // PlayerBP_C pointer location : 0x042F4378, 0x0, 0x0A0, 0x0;
 
