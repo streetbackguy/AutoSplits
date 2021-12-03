@@ -105,9 +105,6 @@ state("UE4Game-Win64-Shipping")
 
 init
 {
-    // Set to true to get debug messages on splits, false otherwise
-    vars.debugSplits = false;
-
     /*
      * While moving around the level the hand flags are flipped at certain places. 
      * I believe this is due to the level streaming and possibly a bug with the PlayerBP prefab.
@@ -200,7 +197,7 @@ init
             return false;
         }
 
-        if (vars.debugSplits) {
+        if (settings["Debug"]) {
             print(itemSettingsKeys.Item1);
         }
 
@@ -283,6 +280,9 @@ startup
     settings.Add("Insert Machine VHS", false);
     settings.Add("Silo VHS", false);
     settings.Add("Insert Silo VHS", false);
+
+    settings.CurrentDefaultParent = null;
+    settings.Add("Debug", false, "Debug Splits");
 }
 
 start
@@ -309,7 +309,7 @@ reset
 split
 {
     if (settings["Left Hand"] && !vars.hasPickedUpLeftHand && current.hasLeftHand) {
-        if (vars.debugSplits) {
+        if (settings["Debug"]) {
             print("Left Hand Split");
         }
         
@@ -318,7 +318,7 @@ split
     }
 
     if (settings["Right Hand"] && !vars.hasPickedUpRightHand && current.hasRightHand) {
-        if (vars.debugSplits) {
+        if (settings["Debug"]) {
             print("Right Hand Split");
         }
 
@@ -328,7 +328,7 @@ split
 
     // TODO: Only do the final split after door is completely open
     if (old.isEndCaseDoorOpening == 4 && current.isEndCaseDoorOpening == 0) {
-        if (vars.debugSplits) {
+        if (settings["Debug"]) {
             print("Poppy Case Door Opened");
         }
 
@@ -340,7 +340,9 @@ split
         string newItemName = vars.GetInventorySlotDisplayName(current.inventorySize - 1);
 
         if (String.IsNullOrEmpty(newItemName)) {
-            print("Item Name string was empty! Current Inventory Size: " + current.inventorySize);
+            if (settings["Debug"]) {
+                print("Item Name string was empty! Current Inventory Size: " + current.inventorySize);
+            }
         } else if (!vars.currentInventory.Contains(newItemName)) { // We need to check that we aren't adding duplicates due to the level streaming issues
             switch (newItemName.ToLower()) {
                 case "blue":
@@ -484,7 +486,7 @@ split
                     return false;
                 }
 
-                if (vars.debugSplits) {
+                if (settings["Debug"]) {
                     print(itemSettingsKeys.Item2);
                 }
 
