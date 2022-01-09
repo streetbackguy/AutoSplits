@@ -5,9 +5,9 @@ state("Poppy_Playtime-Win64-Shipping")
 
     // PlayerBP_C pointer location : 0x042F4378, 0x0, 0x0A0, 0x0;
 
-    bool hasLeftHand                : 0x042F4378, 0x0, 0x0A0, 0x70A;  // The hasLeftHand flag is set when the left hand is picked up
-    bool hasRightHand               : 0x042F4378, 0x0, 0x0A0, 0x709;  // The hasRightHand flag is set when the right hand is picked up
-    bool isGameReady                : 0x042F4378, 0x0, 0x0A0, 0x870;  // The isGameReady flag is set as soon as the player actor is controllable
+    int hasLeftHand                : 0x042F4378, 0x0, 0x0A0, 0x70A;  // The hasLeftHand flag is set when the left hand is picked up
+    int hasRightHand               : 0x042F4378, 0x0, 0x0A0, 0x709;  // The hasRightHand flag is set when the right hand is picked up
+    int isGameReady                : 0x042F4378, 0x0, 0x0A0, 0x870;  // The isGameReady flag is set as soon as the player actor is controllable
 
     int inventorySize               : 0x042F4378, 0x0, 0x0A0, 0x868;  // The current size of the players inventory
 
@@ -40,9 +40,9 @@ state("Playtime_Prototype4-Win64-Shipping")
 
     // PlayerBP_C pointer location : 0x042EC120, 0x030, 0x02A0, 0x0;
 
-    bool hasLeftHand                : 0x042EC120, 0x030, 0x02A0, 0x70A;  // The hasLeftHand flag is set when the left hand is picked up
-    bool hasRightHand               : 0x042EC120, 0x030, 0x02A0, 0x709;  // The hasRightHand flag is set when the right hand is picked up
-    bool isGameReady                : 0x042EC120, 0x030, 0x02A0, 0x870;  // The isGameReady flag is set as soon as the player actor is controllable
+    int hasLeftHand                : 0x042EC120, 0x030, 0x02A0, 0x70A;  // The hasLeftHand flag is set when the left hand is picked up
+    int hasRightHand               : 0x042EC120, 0x030, 0x02A0, 0x709;  // The hasRightHand flag is set when the right hand is picked up
+    int isGameReady                : 0x042EC120, 0x030, 0x02A0, 0x870;  // The isGameReady flag is set as soon as the player actor is controllable
 
     int inventorySize               : 0x042EC120, 0x030, 0x02A0, 0x868;  // The current size of the players inventory
 
@@ -75,9 +75,9 @@ state("UE4Game-Win64-Shipping")
 
     // PlayerBP_C pointer location : 0x044D9A20, 0x030, 0x0260, 0x0;
 
-    bool hasLeftHand                : 0x044D9A20, 0x030, 0x0260, 0x70A;  // The hasLeftHand flag is set when the left hand is picked up
-    bool hasRightHand               : 0x044D9A20, 0x030, 0x0260, 0x709;  // The hasRightHand flag is set when the right hand is picked up
-    bool isGameReady                : 0x044D9A20, 0x030, 0x0260, 0x870;  // The isGameReady flag is set as soon as the player actor is controllable
+    int hasLeftHand                : 0x044D9A20, 0x030, 0x0260, 0x70A;  // The hasLeftHand flag is set when the left hand is picked up
+    int hasRightHand               : 0x044D9A20, 0x030, 0x0260, 0x709;  // The hasRightHand flag is set when the right hand is picked up
+    int isGameReady                : 0x044D9A20, 0x030, 0x0260, 0x870;  // The isGameReady flag is set as soon as the player actor is controllable
 
     int inventorySize               : 0x044D9A20, 0x030, 0x0260, 0x868;  // The current size of the players inventory
 
@@ -287,7 +287,7 @@ startup
 
 start
 {
-    if (current.isGameReady && current.isLoaded == 1 && vars.GetNameFromFName(current.uWorldFNameIndex, 0).ToLower() == "pp_finallevel") {
+    if (current.isGameReady == 1 && current.isLoaded == 1 && vars.GetNameFromFName(current.uWorldFNameIndex, 0).ToLower() == "pp_finallevel") {
         vars.ResetRunPersistentVariables();
         return true;
     }
@@ -308,7 +308,11 @@ reset
 
 split
 {
-    if (settings["Left Hand"] && !vars.hasPickedUpLeftHand && current.hasLeftHand) {
+    if (current.isLoaded == 0 || current.isPaused != 0) {
+        return false;
+    }
+
+    if (settings["Left Hand"] && !vars.hasPickedUpLeftHand && current.hasLeftHand == 1) {
         if (settings["Debug"]) {
             print("Left Hand Split");
         }
@@ -317,7 +321,7 @@ split
         return true;
     }
 
-    if (settings["Right Hand"] && !vars.hasPickedUpRightHand && current.hasRightHand) {
+    if (settings["Right Hand"] && !vars.hasPickedUpRightHand && current.hasRightHand == 1) {
         if (settings["Debug"]) {
             print("Right Hand Split");
         }
