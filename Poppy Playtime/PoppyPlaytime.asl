@@ -103,6 +103,10 @@ state("UE4Game-Win64-Shipping")
     int uWorldFNameIndex            : 0x044F0AE0, 0x018;
 }
 
+update {
+    print(current.isLoaded.ToString() + " " + current.isPaused.ToString());
+}
+
 init
 {
     /*
@@ -295,7 +299,7 @@ start
 
 isLoading
 {
-    return current.isLoaded == 0 || current.isPaused != 0;
+    return current.isLoaded == 0 || current.isPaused == 1;
 }
 
 reset
