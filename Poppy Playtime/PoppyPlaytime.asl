@@ -312,7 +312,7 @@ split
         return false;
     }
 
-    if (settings["Left Hand"] && !vars.hasPickedUpLeftHand && current.hasLeftHand == 1) {
+    if (settings["Left Hand"] && !vars.hasPickedUpLeftHand && (int) current.hasLeftHand == 1) {
         if (settings["Debug"]) {
             print("Left Hand Split");
         }
@@ -321,7 +321,7 @@ split
         return true;
     }
 
-    if (settings["Right Hand"] && !vars.hasPickedUpRightHand && current.hasRightHand == 1) {
+    if (settings["Right Hand"] && !vars.hasPickedUpRightHand && (int) current.hasRightHand == 257) {
         if (settings["Debug"]) {
             print("Right Hand Split");
         }
