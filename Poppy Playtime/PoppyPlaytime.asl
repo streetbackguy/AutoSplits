@@ -13,6 +13,20 @@ startup
 
     //settings.Add("PP", true, "Poppy Playtime Chapter 1");
         //settings.Add("CASE", true, "Split on opening Poppy's Case", "PP");
+
+    if (timer.CurrentTimingMethod == TimingMethod.RealTime)
+    {
+        var timingMessage = MessageBox.Show (
+            "This game uses Time without Loads (Game Time) as the main timing method.\n"+
+            "LiveSplit is currently set to show Real Time (RTA).\n"+
+            "Would you like to set the timing method to Game Time?",
+            "LiveSplit | Poppy Playtime Chapter 1",
+            MessageBoxButtons.YesNo, MessageBoxIcon.Question
+        );
+
+        if (timingMessage == DialogResult.Yes)
+            timer.CurrentTimingMethod = TimingMethod.GameTime;
+    }
 }
 
 isLoading
