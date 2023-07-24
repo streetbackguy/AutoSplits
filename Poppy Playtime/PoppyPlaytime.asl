@@ -29,6 +29,14 @@ startup
     }
 }
 
+update
+{
+    if(old.MainMenu == 451 && current.MainMenu != 451)
+    {
+        print(current.MainMenu.ToString());
+    }
+}
+
 isLoading
 {
     return !current.Loads || current.PauseMenu == 3;
@@ -52,5 +60,5 @@ split
 
 reset
 {
-    return current.MainMenu == 452 && old.MainMenu != 452;
+    return current.MainMenu == 452 && old.MainMenu == 451;
 }
