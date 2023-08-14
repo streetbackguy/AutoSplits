@@ -2,7 +2,7 @@ state("Poppy_Playtime-Win64-Shipping", "Current Patch")
 {
     bool Loads: 0x45867C8;
     byte PauseMenu: 0x4A7DF74;
-    byte Start: 0x4A308F0, 0x9F0, 0x760, 0xFB8, 0x72C;
+    float Start: 0x4A803C0, 0x70;
     string30 MainMenu: 0x4A7DFA8, 0x8B0, 0x18;
     //int CaseOpen: 0x4517370, 0x910, 0xC0, 0xF8, 0x18, 0xA8, 0x188, 0x530;
 }
@@ -36,7 +36,7 @@ isLoading
 
 start 
 {
-    return current.Start == 0 && old.Start == 1;
+    return current.Start != 0;
 }
 
 split
