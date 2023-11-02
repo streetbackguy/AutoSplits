@@ -34,7 +34,7 @@ startup
             settings.Add("RIGHT", true, "Split on getting the Right Hand", "ANY");
             settings.Add("Scanner Doll", true, "Scanner Doll", "ANY");
             settings.Add("Insert Scanner Doll", true, "Insert Scanner Doll", "ANY");
-            //settings.Add("CASE", true, "Split on opening Poppy's Case", "ANY");
+            // settings.Add("CASE", true, "Split on opening Poppy's Case", "ANY");
         settings.Add("VHS", true, "VHS Tapes", "PP");
             settings.Add("Security VHS", true, "Security VHS", "VHS");
             settings.Add("Insert Security VHS", true, "Insert Security VHS", "VHS");
