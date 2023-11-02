@@ -36,10 +36,10 @@ startup
             settings.Add("Insert Scanner Doll", true, "Insert Scanner Doll", "ANY");
             settings.Add("CASE", true, "Split on opening Poppy's Case", "ANY");
         settings.Add("VHS", true, "VHS Tapes", "PP");
-            settings.Add("Lobby VHS", true, "Lobby VHS", "VHS");
-            settings.Add("Insert Lobby VHS", true, "Insert Lobby VHS", "VHS");
             settings.Add("Security VHS", true, "Security VHS", "VHS");
             settings.Add("Insert Security VHS", true, "Insert Security VHS", "VHS");
+            settings.Add("Lobby VHS", true, "Lobby VHS", "VHS");
+            settings.Add("Insert Lobby VHS", true, "Insert Lobby VHS", "VHS");
             settings.Add("Storage VHS", true, "Storage VHS", "VHS");
             settings.Add("Insert Storage VHS", true, "Insert Storage VHS", "VHS");
             settings.Add("Machine VHS", true, "Machine VHS", "VHS");
