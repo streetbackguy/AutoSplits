@@ -1,13 +1,17 @@
 state("Poppy_Playtime-Win64-Shipping", "Current Patch")
 {
     bool Loads: 0x45867C8;
-    byte PauseMenu: 0x4A7DF74;
-    float Start: 0x4A803C0, 0x70;
+    int isLoaded: 0x4583D10;
+    int isPaused: 0x4A7DF74;
     string30 MainMenu: 0x4A7DFA8, 0x8B0, 0x18;
 
-    byte hasLeftHand: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x70A;
-    byte hasRightHand: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x709;
-    int CaseOpen: 0x483DBE0, 0x220, 0x478, 0x138, 0x348, 0x208;
+    int hasLeftHand: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x70A;
+    int hasRightHand: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x709;
+    int isGameReady: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x870;
+    //int CaseOpen: 0x4936658, 0x90, 0x320, 0x494;
+
+    float LocationX: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x618;
+    float LocationY: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x61C;
 
     int inventorySize: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x868;
 
@@ -30,16 +34,16 @@ startup
 
     settings.Add("PP", true, "Poppy Playtime Chapter 1");
         settings.Add("ANY", true, "Any%", "PP");
-            settings.Add("LEFT", true, "Split on getting the Left Hand", "ANY");
-            settings.Add("RIGHT", true, "Split on getting the Right Hand", "ANY");
+            settings.Add("Left Hand", true, "Split on getting the Left Hand", "ANY");
+            settings.Add("Right Hand", true, "Split on getting the Right Hand", "ANY");
             settings.Add("Scanner Doll", true, "Scanner Doll", "ANY");
             settings.Add("Insert Scanner Doll", true, "Insert Scanner Doll", "ANY");
-            // settings.Add("CASE", true, "Split on opening Poppy's Case", "ANY");
+            settings.Add("CASE", true, "Split on opening Poppy's Case", "ANY");
         settings.Add("VHS", true, "VHS Tapes", "PP");
+            settings.Add("Insert Lobby VHS", true, "Insert Lobby VHS", "VHS");
+            settings.Add("Lobby VHS", true, "Lobby VHS", "VHS");
             settings.Add("Security VHS", true, "Security VHS", "VHS");
             settings.Add("Insert Security VHS", true, "Insert Security VHS", "VHS");
-            settings.Add("Lobby VHS", true, "Lobby VHS", "VHS");
-            settings.Add("Insert Lobby VHS", true, "Insert Lobby VHS", "VHS");
             settings.Add("Storage VHS", true, "Storage VHS", "VHS");
             settings.Add("Insert Storage VHS", true, "Insert Storage VHS", "VHS");
             settings.Add("Machine VHS", true, "Machine VHS", "VHS");
@@ -186,34 +190,41 @@ init
 
 isLoading
 {
-    return !current.Loads || current.PauseMenu == 3;
+    return current.isLoaded == 0 || current.isPaused == 3;
 }
 
 start 
 {
-    return current.Start != 0;
+    if (current.LocationX != 0 && current.MainMenu == "/PP_FinalLevel" || current.LocationY != 0 && current.MainMenu == "/PP_FinalLevel") 
+    {
+        vars.ResetRunPersistentVariables();
+        return true;
+    }
 }
 
 split
 {
-    if (old.hasLeftHand == 0 && current.hasLeftHand == 1 && !vars.Splits.Contains("LEFT"))
-    {
-        vars.Splits.Add("LEFT");
-        return settings["LEFT"];
+    if (current.isLoaded == 0 || current.isPaused != 0) {
+        return false;
     }
 
-    if (old.hasRightHand == 0 && current.hasRightHand == 1 && !vars.Splits.Contains("RIGHT"))
+    if (settings["Left Hand"] && !vars.hasPickedUpLeftHand && (int) current.hasLeftHand == 1)
     {
-        vars.Splits.Add("RIGHT");
-        return settings["RIGHT"];
+        vars.hasPickedUpLeftHand = true;
+        return true;
     }
 
-    //Currently not figured out. Work in Progress.
-    //if (old.CaseOpen == 4 && current.CaseOpen == 0 && !vars.Splits.Contains("CASE"))
-    //{
-        //vars.Splits.Add("CASE");
-        //return settings["CASE"];
-    //}
+    if (settings["Right Hand"] && !vars.hasPickedUpRightHand && (int) current.hasRightHand == 257)
+    {
+        vars.hasPickedUpRightHand = true;
+        return true;
+    }
+
+    // TODO: Only do the final split after door is completely open
+    if (old.isEndCaseDoorOpening == 4 && current.isEndCaseDoorOpening == 0)
+    {
+        return true;
+    }
 
     if (current.inventorySize > old.inventorySize) {
         // Add the item to the player inventory
