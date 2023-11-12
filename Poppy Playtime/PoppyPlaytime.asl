@@ -195,7 +195,7 @@ isLoading
 
 start 
 {
-    if (current.LocationX != 0 && current.MainMenu == "/PP_FinalLevel" || current.LocationY != 0 && current.MainMenu == "/PP_FinalLevel") 
+    if (current.LocationX != 0 && current.isLoaded == 1 && current.MainMenu == "/PP_FinalLevel" || current.LocationY != 0 && current.isLoaded == 1 && current.MainMenu == "/PP_FinalLevel") 
     {
         vars.ResetRunPersistentVariables();
         return true;
