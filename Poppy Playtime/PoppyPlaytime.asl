@@ -1,7 +1,6 @@
 state("Poppy_Playtime-Win64-Shipping", "Current Patch")
 {
-    bool Loads: 0x45867C8;
-    int isLoaded: 0x4583D10;
+    byte isLoaded: 0x45867C8;
     int isPaused: 0x4A7DF74;
     string30 MainMenu: 0x4A7DFA8, 0x8B0, 0x18;
 
