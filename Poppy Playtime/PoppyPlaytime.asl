@@ -4,9 +4,8 @@ state("Poppy_Playtime-Win64-Shipping")
     int isPaused: 0x4A7DF74;
     string30 MainMenu: 0x4A7DFA8, 0x8B0, 0x18;
 
-    int hasLeftHand: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x70A;
-    int hasRightHand: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x709;
-    int isGameReady: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x870;
+    bool hasLeftHand: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x70A;
+    bool hasRightHand: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x709;
     //int CaseOpen: 0x4936658, 0x90, 0x320, 0x494;
 
     float LocationX: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x618;
@@ -219,13 +218,13 @@ split
         return false;
     }
 
-    if (settings["Left Hand"] && !vars.hasPickedUpLeftHand && (int) current.hasLeftHand == 1)
+    if (settings["Left Hand"] && !vars.hasPickedUpLeftHand && current.hasLeftHand)
     {
         vars.hasPickedUpLeftHand = true;
         return true;
     }
 
-    if (settings["Right Hand"] && !vars.hasPickedUpRightHand && (int) current.hasRightHand == 257)
+    if (settings["Right Hand"] && !vars.hasPickedUpRightHand && current.hasRightHand)
     {
         vars.hasPickedUpRightHand = true;
         return true;
