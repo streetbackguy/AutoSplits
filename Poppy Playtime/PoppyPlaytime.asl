@@ -1,122 +1,80 @@
 state("Poppy_Playtime-Win64-Shipping")
 {
-    int isLoaded                    : 0x3E52898;
-    int isPaused                    : 0x042D6550, 0x020, 0x018, 0x060, 0x0BC;
+    byte isLoaded: 0x45867C8;
+    int isPaused: 0x4A7DF74;
+    string30 MainMenu: 0x4A7DFA8, 0x8B0, 0x18;
 
-    // PlayerBP_C pointer location : 0x042F4378, 0x0, 0x0A0, 0x0;
+    int hasLeftHand: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x70A;
+    int hasRightHand: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x709;
+    int isGameReady: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x870;
+    //int CaseOpen: 0x4936658, 0x90, 0x320, 0x494;
 
-    int hasLeftHand                : 0x042F4378, 0x0, 0x0A0, 0x70A;  // The hasLeftHand flag is set when the left hand is picked up
-    int hasRightHand               : 0x042F4378, 0x0, 0x0A0, 0x709;  // The hasRightHand flag is set when the right hand is picked up
-    int isGameReady                : 0x042F4378, 0x0, 0x0A0, 0x870;  // The isGameReady flag is set as soon as the player actor is controllable
+    float LocationX: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x618;
+    float LocationY: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x61C;
 
-    int inventorySize               : 0x042F4378, 0x0, 0x0A0, 0x868;  // The current size of the players inventory
+    int inventorySize: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x868;
 
-    // I couldn't find a valid item id, so instead each inventory slot is checked using it's display name
-    string32 slot1DisplayName       : 0x042F4378, 0x0, 0x0A0, 0x860, 0x008, 0x0;
-    string32 slot2DisplayName       : 0x042F4378, 0x0, 0x0A0, 0x860, 0x030, 0x0;
-    string32 slot3DisplayName       : 0x042F4378, 0x0, 0x0A0, 0x860, 0x058, 0x0;
-    string32 slot4DisplayName       : 0x042F4378, 0x0, 0x0A0, 0x860, 0x080, 0x0;
-    string32 slot5DisplayName       : 0x042F4378, 0x0, 0x0A0, 0x860, 0x0A8, 0x0;
-    string32 slot6DisplayName       : 0x042F4378, 0x0, 0x0A0, 0x860, 0x0D0, 0x0;
-    string32 slot7DisplayName       : 0x042F4378, 0x0, 0x0A0, 0x860, 0x0F8, 0x0;
-    string32 slot8DisplayName       : 0x042F4378, 0x0, 0x0A0, 0x860, 0x118, 0x0;
-    string32 slot9DisplayName       : 0x042F4378, 0x0, 0x0A0, 0x860, 0x148, 0x0;
-    string32 slot10DisplayName      : 0x042F4378, 0x0, 0x0A0, 0x860, 0x170, 0x0;
-    string32 slot11DisplayName      : 0x042F4378, 0x0, 0x0A0, 0x860, 0x198, 0x0;
-
-    // PoppyDoorCase_C pointer location : 0x04301360, 0x088, 0x008, 0x128, 0x098, 0x760, 0x0;
-
-    // As soon as the door case opening animation timeline has completed we can split
-    int isEndCaseDoorOpening        : 0x04301360, 0x088, 0x008, 0x128, 0x098, 0x760, 0x278, 0x0B1;
-
-    // UWorld pointer location : 0x04301360, 0x0;
-    int uWorldFNameIndex            : 0x04301360, 0x018;
+    string32 slot1DisplayName: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x860, 0x8, 0x0;
+    string32 slot2DisplayName: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x860, 0x30, 0x0;
+    string32 slot3DisplayName: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x860, 0x58, 0x0;
+    string32 slot4DisplayName: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x860, 0x80, 0x0;
+    string32 slot5DisplayName: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x860, 0xA8, 0x0;
+    string32 slot6DisplayName: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x860, 0xD0, 0x0;
+    string32 slot7DisplayName: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x860, 0xF8, 0x0;
+    string32 slot8DisplayName: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x860, 0x118, 0x0;
+    string32 slot9DisplayName: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x860, 0x148, 0x0;
+    string32 slot10DisplayName: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x860, 0x170, 0x0;
+    string32 slot11DisplayName: 0x4A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x860, 0x198, 0x0;
 }
 
-state("Playtime_Prototype4-Win64-Shipping")
+startup
 {
-    int isLoaded                    : 0x3E54898; // Thanks to Mossfis for finding this memory address!
-    int isPaused                    : 0x04303360, 0x118, 0x2B8;
+    settings.Add("PP", true, "Poppy Playtime Chapter 1");
+        settings.Add("ANY", true, "Any%", "PP");
+            settings.Add("Left Hand", true, "Split on getting the Left Hand", "ANY");
+            settings.Add("Right Hand", true, "Split on getting the Right Hand", "ANY");
+            settings.Add("Scanner Doll", true, "Scanner Doll", "ANY");
+            settings.Add("Insert Scanner Doll", true, "Insert Scanner Doll", "ANY");
+            settings.Add("CASE", true, "Split on opening Poppy's Case", "ANY");
+        settings.Add("VHS", true, "VHS Tapes", "PP");
+            settings.Add("Insert Lobby VHS", true, "Insert Lobby VHS", "VHS");
+            settings.Add("Lobby VHS", true, "Lobby VHS", "VHS");
+            settings.Add("Security VHS", true, "Security VHS", "VHS");
+            settings.Add("Insert Security VHS", true, "Insert Security VHS", "VHS");
+            settings.Add("Storage VHS", true, "Storage VHS", "VHS");
+            settings.Add("Insert Storage VHS", true, "Insert Storage VHS", "VHS");
+            settings.Add("Machine VHS", true, "Machine VHS", "VHS");
+            settings.Add("Insert Machine VHS", true, "Insert Machine VHS", "VHS");
+            settings.Add("Silo VHS", true, "Silo VHS", "VHS");
+            settings.Add("Insert Silo VHS", true, "Insert Silo VHS", "VHS");
+        settings.Add("KEYS", true, "Keys", "PP");
+            settings.Add("Simon Room Key", true, "Simon Room Key", "KEYS");
+            settings.Add("Red Key", true, "Red Key", "KEYS");
+            settings.Add("Blue Key", true, "Blue Key", "KEYS");
+            settings.Add("Green Key", true, "Green Key", "KEYS");
+            settings.Add("Yellow Key", true, "Yellow Key", "KEYS");
 
-    // PlayerBP_C pointer location : 0x042EC120, 0x030, 0x02A0, 0x0;
 
-    int hasLeftHand                : 0x042EC120, 0x030, 0x02A0, 0x70A;  // The hasLeftHand flag is set when the left hand is picked up
-    int hasRightHand               : 0x042EC120, 0x030, 0x02A0, 0x709;  // The hasRightHand flag is set when the right hand is picked up
-    int isGameReady                : 0x042EC120, 0x030, 0x02A0, 0x870;  // The isGameReady flag is set as soon as the player actor is controllable
+    if (timer.CurrentTimingMethod == TimingMethod.RealTime)
+    {
+        var timingMessage = MessageBox.Show (
+            "This game uses Time without Loads (Game Time) as the main timing method.\n"+
+            "LiveSplit is currently set to show Real Time (RTA).\n"+
+            "Would you like to set the timing method to Game Time?",
+            "LiveSplit | Poppy Playtime Chapter 1",
+            MessageBoxButtons.YesNo, MessageBoxIcon.Question
+        );
 
-    int inventorySize               : 0x042EC120, 0x030, 0x02A0, 0x868;  // The current size of the players inventory
-
-    // I couldn't find a valid item id, so instead each inventory slot is checked using it's display name
-    string32 slot1DisplayName       : 0x042EC120, 0x030, 0x02A0, 0x860, 0x008, 0x0;
-    string32 slot2DisplayName       : 0x042EC120, 0x030, 0x02A0, 0x860, 0x030, 0x0;
-    string32 slot3DisplayName       : 0x042EC120, 0x030, 0x02A0, 0x860, 0x058, 0x0;
-    string32 slot4DisplayName       : 0x042EC120, 0x030, 0x02A0, 0x860, 0x080, 0x0;
-    string32 slot5DisplayName       : 0x042EC120, 0x030, 0x02A0, 0x860, 0x0A8, 0x0;
-    string32 slot6DisplayName       : 0x042EC120, 0x030, 0x02A0, 0x860, 0x0D0, 0x0;
-    string32 slot7DisplayName       : 0x042EC120, 0x030, 0x02A0, 0x860, 0x0F8, 0x0;
-    string32 slot8DisplayName       : 0x042EC120, 0x030, 0x02A0, 0x860, 0x118, 0x0;
-    string32 slot9DisplayName       : 0x042EC120, 0x030, 0x02A0, 0x860, 0x148, 0x0;
-    string32 slot10DisplayName      : 0x042EC120, 0x030, 0x02A0, 0x860, 0x170, 0x0;
-    string32 slot11DisplayName      : 0x042EC120, 0x030, 0x02A0, 0x860, 0x198, 0x0;
-
-    // PoppyDoorCase_C pointer location : 0x04303360, 0x580, 0x018, 0x020, 0x098, 0x780;
-
-    // As soon as the door case opening animation timeline has completed we can split
-    int isEndCaseDoorOpening        : 0x04303360, 0x580, 0x018, 0x020, 0x098, 0x780, 0x278, 0x0B1;
-
-    // UWorld pointer location : 0x42FEBD8, 0x018, 0x010, 0x068, 0x020;
-    int uWorldFNameIndex            : 0x42FEBD8, 0x018, 0x010, 0x068, 0x020, 0x018;
-}
-
-state("UE4Game-Win64-Shipping")
-{
-    int isLoaded                    : 0x4033228; // Thanks to Mossfis for finding this memory address!
-    int isPaused                    : 0x044ED220, 0x8A8;
-
-    // PlayerBP_C pointer location : 0x044D9A20, 0x030, 0x0260, 0x0;
-
-    int hasLeftHand                : 0x044D9A20, 0x030, 0x0260, 0x70A;  // The hasLeftHand flag is set when the left hand is picked up
-    int hasRightHand               : 0x044D9A20, 0x030, 0x0260, 0x709;  // The hasRightHand flag is set when the right hand is picked up
-    int isGameReady                : 0x044D9A20, 0x030, 0x0260, 0x870;  // The isGameReady flag is set as soon as the player actor is controllable
-
-    int inventorySize               : 0x044D9A20, 0x030, 0x0260, 0x868;  // The current size of the players inventory
-
-    // I couldn't find a valid item id, so instead each inventory slot is checked using it's display name
-    string32 slot1DisplayName       : 0x044D9A20, 0x030, 0x0260, 0x860, 0x008, 0x0;
-    string32 slot2DisplayName       : 0x044D9A20, 0x030, 0x0260, 0x860, 0x030, 0x0;
-    string32 slot3DisplayName       : 0x044D9A20, 0x030, 0x0260, 0x860, 0x058, 0x0;
-    string32 slot4DisplayName       : 0x044D9A20, 0x030, 0x0260, 0x860, 0x080, 0x0;
-    string32 slot5DisplayName       : 0x044D9A20, 0x030, 0x0260, 0x860, 0x0A8, 0x0;
-    string32 slot6DisplayName       : 0x044D9A20, 0x030, 0x0260, 0x860, 0x0D0, 0x0;
-    string32 slot7DisplayName       : 0x044D9A20, 0x030, 0x0260, 0x860, 0x0F8, 0x0;
-    string32 slot8DisplayName       : 0x044D9A20, 0x030, 0x0260, 0x860, 0x118, 0x0;
-    string32 slot9DisplayName       : 0x044D9A20, 0x030, 0x0260, 0x860, 0x148, 0x0;
-    string32 slot10DisplayName      : 0x044D9A20, 0x030, 0x0260, 0x860, 0x170, 0x0;
-    string32 slot11DisplayName      : 0x044D9A20, 0x030, 0x0260, 0x860, 0x198, 0x0;
-
-    // PoppyDoorCase_C pointer location : 0x044F0AE0, 0x138, 0x028, 0x098, 0x708, 0x0;
-
-    // As soon as the door case opening animation timeline has completed we can split
-    int isEndCaseDoorOpening        : 0x044F0AE0, 0x138, 0x028, 0x098, 0x708, 0x278, 0x0B1;
-
-    // UWorld pointer location : 0x044F0AE0, 0x0;
-    int uWorldFNameIndex            : 0x044F0AE0, 0x018;
+        if (timingMessage == DialogResult.Yes)
+            timer.CurrentTimingMethod = TimingMethod.GameTime;
+    }
 }
 
 init
 {
-    /*
-     * While moving around the level the hand flags are flipped at certain places. 
-     * I believe this is due to the level streaming and possibly a bug with the PlayerBP prefab.
-     * To avoid incorrect splits we keep a persistent flag which is reset with every run start
-     */
     vars.hasPickedUpLeftHand = false;
     vars.hasPickedUpRightHand = false;
 
-    /*
-     * Same thing for the different inventory items. At certain level streaming triggers it seems
-     * to recreate the player prefab from a previous checkpoint. This adds and then removes items from inventory the next frame
-     */
     vars.hasPickedUpSecurityVhs = false;
     vars.hasInsertedSecurityVhs = false;
 
@@ -225,117 +183,51 @@ init
         vars.storageKeyCount = 0;
         vars.currentInventory = new List<string>();
     });
-
-    vars.GetFNamePool = (Func<IntPtr>) (() => {	
-        var scanner = new SignatureScanner(game, modules.First().BaseAddress, (int)modules.First().ModuleMemorySize);
-        var pattern = new SigScanTarget("74 09 48 8D 15 ?? ?? ?? ?? EB 16");
-        var gameOffset = scanner.Scan(pattern);
-        if (gameOffset == IntPtr.Zero) return IntPtr.Zero;
-        int offset = game.ReadValue<int>((IntPtr)gameOffset+0x5);
-        return (IntPtr)gameOffset+offset+0x9;
-	});
-
-    vars.FNamePool = vars.GetFNamePool();
-
-    vars.GetNameFromFName = (Func<int, int, string>) ( (key,partial) => {
-        int chunkOffset = key >> 16;
-        int nameOffset = (ushort)key;
-        IntPtr namePoolChunk = memory.ReadValue<IntPtr>((IntPtr)vars.FNamePool + (chunkOffset+2) * 0x8);
-        Int16 nameEntry = game.ReadValue<Int16>((IntPtr)namePoolChunk + 2 * nameOffset);
-        int nameLength = nameEntry >> 6;
-        if (partial == 0) {
-            return game.ReadString((IntPtr)namePoolChunk + 2 * nameOffset + 2, nameLength);
-        } else {
-            return game.ReadString((IntPtr)namePoolChunk + 2 * nameOffset + 2, nameLength)+"_"+partial.ToString();
-        }
-	});
 }
 
-startup
+update
 {
-    // Any% Settings
-    settings.Add("Chapter 1", true);
-    settings.Add("Any%", true, "General Any% settings.", "Chapter 1");
-    settings.CurrentDefaultParent = "Any%";
-    settings.Add("Security VHS", true);
-    settings.Add("Insert Security VHS", true);
-    settings.Add("Left Hand", true);
-    settings.Add("Simon Room Key", true, "Power Room Key");
-    settings.Add("Blue Key", true, "Storage Key 1");
-    settings.Add("Red Key", true, "Storage Key 2");
-    settings.Add("Green Key", true, "Storage Key 3");
-    settings.Add("Yellow Key", true, "Storage Key 4");
-    settings.Add("Right Hand", true);
-    settings.Add("Scanner Doll", true);
-    settings.Add("Insert Scanner Doll", true);
+    if(current.hasLeftHand != old.hasLeftHand)
+    {
+        print("Old: " + old.hasLeftHand + " New: " + current.hasLeftHand);
+    }
 
-    // All Tapes Settings
-    settings.Add("All Tapes", false, "All Tapes Category Settings.", "Chapter 1");
-    settings.CurrentDefaultParent = "All Tapes";
-    settings.Add("Lobby VHS", false);
-    settings.Add("Insert Lobby VHS", false);
-    settings.Add("Storage VHS", false);
-    settings.Add("Insert Storage VHS", false);
-    settings.Add("Machine VHS", false);
-    settings.Add("Insert Machine VHS", false);
-    settings.Add("Silo VHS", false);
-    settings.Add("Insert Silo VHS", false);
-
-    settings.CurrentDefaultParent = null;
-    settings.Add("Debug", false, "Debug Splits");
-}
-
-start
-{
-    if (current.isGameReady == 1 && current.isLoaded == 1 && vars.GetNameFromFName(current.uWorldFNameIndex, 0).ToLower() == "pp_finallevel") {
-        vars.ResetRunPersistentVariables();
-        return true;
+    if(current.hasRightHand != old.hasRightHand)
+    {
+        print("Old: " + old.hasRightHand + " New: " + current.hasRightHand);
     }
 }
 
 isLoading
 {
-    return current.isLoaded == 0 || current.isPaused == 1;
+    return current.isLoaded == 0 || current.isPaused == 3;
 }
 
-reset
+start 
 {
-    // 803705 is the fname index of the main menu map
-    if (current.uWorldFNameIndex != old.uWorldFNameIndex && vars.GetNameFromFName(current.uWorldFNameIndex, 0).ToLower() == "mainmenu") {
+    if (current.LocationX != 0 && current.isLoaded == 1 && current.MainMenu == "/PP_FinalLevel" || current.LocationY != 0 && current.isLoaded == 1 && current.MainMenu == "/PP_FinalLevel") 
+    {
+        vars.ResetRunPersistentVariables();
         return true;
     }
 }
 
 split
 {
-    if (current.isLoaded == 0 || current.isPaused != 0) {
+    if (current.isPaused == 3) 
+    {
         return false;
     }
 
-    if (settings["Left Hand"] && !vars.hasPickedUpLeftHand && (int) current.hasLeftHand == 1) {
-        if (settings["Debug"]) {
-            print("Left Hand Split");
-        }
-        
+    if (settings["Left Hand"] && !vars.hasPickedUpLeftHand && (int) current.hasLeftHand == 1)
+    {
         vars.hasPickedUpLeftHand = true;
         return true;
     }
 
-    if (settings["Right Hand"] && !vars.hasPickedUpRightHand && (int) current.hasRightHand == 257) {
-        if (settings["Debug"]) {
-            print("Right Hand Split");
-        }
-
+    if (settings["Right Hand"] && !vars.hasPickedUpRightHand && (int) current.hasRightHand == 257)
+    {
         vars.hasPickedUpRightHand = true;
-        return true;
-    }
-
-    // TODO: Only do the final split after door is completely open
-    if (old.isEndCaseDoorOpening == 4 && current.isEndCaseDoorOpening == 0) {
-        if (settings["Debug"]) {
-            print("Poppy Case Door Opened");
-        }
-
         return true;
     }
 
@@ -405,8 +297,7 @@ split
 
                     break;
             }
-
-            // Check if we picked up a valid item, or this is a level streaming bug
+// Check if we picked up a valid item, or this is a level streaming bug
             if (!String.IsNullOrEmpty(newItemName)) {
                 vars.currentInventory.Add(newItemName);
 
@@ -498,4 +389,9 @@ split
             }
         }
     }
+}
+
+reset
+{
+    return current.MainMenu == "/MainMenu" && old.MainMenu == "/PP_FinalLevel";
 }
