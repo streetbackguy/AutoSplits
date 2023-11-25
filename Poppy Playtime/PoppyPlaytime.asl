@@ -1,4 +1,4 @@
-state("Poppy_Playtime-Win64-Shipping", "Current Patch")
+state("Poppy_Playtime-Win64-Shipping")
 {
     byte isLoaded: 0x45867C8;
     int isPaused: 0x4A7DF74;
@@ -29,8 +29,6 @@ state("Poppy_Playtime-Win64-Shipping", "Current Patch")
 
 startup
 {
-    vars.Splits = new HashSet<string>();
-
     settings.Add("PP", true, "Poppy Playtime Chapter 1");
         settings.Add("ANY", true, "Any%", "PP");
             settings.Add("Left Hand", true, "Split on getting the Left Hand", "ANY");
@@ -187,6 +185,19 @@ init
     });
 }
 
+update
+{
+    if(current.hasLeftHand != old.hasLeftHand)
+    {
+        print("Old: " + old.hasLeftHand + " New: " + current.hasLeftHand);
+    }
+
+    if(current.hasRightHand != old.hasRightHand)
+    {
+        print("Old: " + old.hasRightHand + " New: " + current.hasRightHand);
+    }
+}
+
 isLoading
 {
     return current.isLoaded == 0 || current.isPaused == 3;
@@ -203,7 +214,8 @@ start
 
 split
 {
-    if (current.isLoaded == 0 || current.isPaused != 0) {
+    if (current.isPaused == 3) 
+    {
         return false;
     }
 
@@ -216,12 +228,6 @@ split
     if (settings["Right Hand"] && !vars.hasPickedUpRightHand && (int) current.hasRightHand == 257)
     {
         vars.hasPickedUpRightHand = true;
-        return true;
-    }
-
-    // TODO: Only do the final split after door is completely open
-    if (old.isEndCaseDoorOpening == 4 && current.isEndCaseDoorOpening == 0)
-    {
         return true;
     }
 
@@ -388,14 +394,4 @@ split
 reset
 {
     return current.MainMenu == "/MainMenu" && old.MainMenu == "/PP_FinalLevel";
-}
-
-onStart
-{
-    vars.Splits.Clear();
-}
-
-onReset
-{
-    vars.Splits.Clear();
 }
