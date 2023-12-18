@@ -71,6 +71,8 @@ startup
 
 init
 {
+    vars.Splits = new HashSet<string>(); 
+
     vars.hasPickedUpLeftHand = false;
     vars.hasPickedUpRightHand = false;
 
@@ -218,15 +220,19 @@ split
         return false;
     }
 
-    if (settings["Left Hand"] && !vars.hasPickedUpLeftHand && current.hasLeftHand)
+    if (settings["Left Hand"] && !vars.hasPickedUpLeftHand && !vars.Splits.Contains("LEFT"))
     {
         vars.hasPickedUpLeftHand = true;
+        vars.Splits.Add("LEFT");
+        return settings["LEFT"];
         return true;
     }
 
-    if (settings["Right Hand"] && !vars.hasPickedUpRightHand && current.hasRightHand)
+    if (settings["Right Hand"] && !vars.hasPickedUpRightHand && !vars.Splits.Contains("RIGHT"))
     {
         vars.hasPickedUpRightHand = true;
+        vars.Splits.Add("RIGHT");
+        return settings["RIGHT"];
         return true;
     }
 
@@ -393,4 +399,9 @@ split
 reset
 {
     return current.MainMenu == "/MainMenu" && old.MainMenu == "/PP_FinalLevel";
+}
+
+onStart
+{
+    vars.Splits.Clear();
 }
