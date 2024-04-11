@@ -1,6 +1,6 @@
 state("Poppy_Playtime-Win64-Shipping")
 {
-    int isLoaded: 0x48568E8;
+    int isLoaded: 0x45867C8;
     int isPaused: 0x4A7DF74;
 
     int hasLeftHand: 0x04A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x70A;
@@ -30,7 +30,7 @@ state("Poppy_Playtime-Win64-Shipping")
     // PoppyDoorCase_C pointer location : 0x04A818C0, 0x88, 0x08, 0x128, 0x098, 0x750, 0x278;
 
     // As soon as the door case opening animation timeline has completed we can split
-    int isEndCaseDoorOpening: 0x04A818C0, 0x88, 0x8, 0x128, 0x98, 0x750, 0x278, 0xB1;
+    float isEndCaseDoorOpening: 0x04A818C0, 0x88, 0x8, 0x128, 0x98, 0x750, 0x278, 0xB8;
 
     // UWorld pointer location : 0x04A818C0, 0x0;
     int uWorldFNameIndex: 0x04A818C0, 0x018;
@@ -241,7 +241,7 @@ reset
 
 split
 {
-    if (current.isLoaded == 0 || current.isPaused != 0) {
+    if (current.isLoaded == 0 || current.isPaused == 3) {
         return false;
     }
 
@@ -264,7 +264,7 @@ split
     }
 
     // TODO: Only do the final split after door is completely open
-    if (old.isEndCaseDoorOpening == 4 && current.isEndCaseDoorOpening == 0) {
+    if (old.isEndCaseDoorOpening != 6 && current.isEndCaseDoorOpening == 6) {
         if (settings["Debug"]) {
             print("Poppy Case Door Opened");
         }
