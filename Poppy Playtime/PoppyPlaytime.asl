@@ -220,7 +220,7 @@ startup
 
 start
 {
-    if (current.isGameReady == 1 && current.isLoaded == 1 && (current.VelocityX != old.VelocityX || current.VelocityY != old.VelocityY || current.VelocityZ != old.VelocityZ || current.LastUpdateRotationZ != old.LastUpdateRotationZ || current.LastUpdateRotationW != old.LastUpdateRotationW)) {
+    if (current.isGameReady == 1 && (current.VelocityX != 0 && old.VelocityX == 0 || current.VelocityY != 0 && old.VelocityY == 0 || current.VelocityZ != 0  && old.VelocityZ == 0 || current.LastUpdateRotationZ != 0  && old.LastUpdateRotationZ == 0|| current.LastUpdateRotationW != 1  && old.LastUpdateRotationW == 1)) {
         vars.ResetRunPersistentVariables();
         return true;
     }
