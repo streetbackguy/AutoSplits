@@ -1,7 +1,7 @@
 state("Poppy_Playtime-Win64-Shipping")
 {
     int isLoaded: 0x48568E8;
-    int isPaused: 0x04A7DFA8, 0x8A8;
+    int isPaused: 0x4A7DF74;
 
     int hasLeftHand: 0x04A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x70A;
     int hasRightHand: 0x04A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x709;
@@ -228,7 +228,7 @@ start
 
 isLoading
 {
-    return current.isLoaded == 0 || current.isPaused == 1;
+    return current.isLoaded == 0 || current.isPaused == 3;
 }
 
 reset
