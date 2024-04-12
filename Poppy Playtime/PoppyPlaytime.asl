@@ -13,7 +13,6 @@ state("Poppy_Playtime-Win64-Shipping")
     float VelocityY: 0x04A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x288, 0xC8;
     float VelocityZ: 0x04A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x288, 0xCC;
     float LastUpdateRotationZ: 0x04A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x288, 0x248;
-    float LastUpdateRotationW: 0x04A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x288, 0x24C;
 
     string32 slot1DisplayName: 0x04A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x860, 0x8, 0x0;
     string32 slot2DisplayName: 0x04A7DFA8, 0xD28, 0x38, 0x0, 0x30, 0x2B8, 0xE90, 0x860, 0x30, 0x0;
@@ -220,7 +219,7 @@ startup
 
 start
 {
-    if (current.isGameReady == 1 && (current.VelocityX != 0 && old.VelocityX == 0 || current.VelocityY != 0 && old.VelocityY == 0 || current.VelocityZ != 0  && old.VelocityZ == 0 || current.LastUpdateRotationZ != 0  && old.LastUpdateRotationZ == 0|| current.LastUpdateRotationW != 1  && old.LastUpdateRotationW == 1)) {
+    if (current.isGameReady == 1 && (current.VelocityX != 0 && old.VelocityX == 0 || current.VelocityY != 0 && old.VelocityY == 0 || current.VelocityZ != 0  && old.VelocityZ == 0 || current.LastUpdateRotationZ != 0  && old.LastUpdateRotationZ == 0)) {
         vars.ResetRunPersistentVariables();
         return true;
     }
