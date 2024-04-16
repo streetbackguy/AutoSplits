@@ -431,3 +431,8 @@ split
         }
     }
 }
+
+exit
+{
+    timer.IsGameTimePaused = true;
+}
