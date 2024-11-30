@@ -9,8 +9,11 @@ state("Poppy_Playtime-Win64-Shipping")
 
     int inventorySize: 0x67E3B50, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x910;
 
-    float Movement: 0x67E3B50, 0xCF8, 0x1E0, 0x6C;
-    float LastUpdateRotationZ: 0x67E3B50, 0xFC0, 0x38, 0x0, 0x30, 0x310;
+    int MovementX: 0x67E6430, 0x1B8, 0x38, 0x0, 0x30, 0x2D0, 0x320, 0x2E8;
+    int MovementY: 0x67E6430, 0x1B8, 0x38, 0x0, 0x30, 0x2D0, 0x320, 0x2F0;
+    int MovementZ: 0x67E6430, 0x1B8, 0x38, 0x0, 0x30, 0x2D0, 0x320, 0x2F8;
+    float CamPitch: 0x67E6430, 0x1B8, 0x38, 0x0, 0x30, 0x308;
+    float CamYaw: 0x67E6430, 0x1B8, 0x38, 0x0, 0x30, 0x310;
 
     string32 slot1DisplayName: 0x67E3B50, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x908, 0x8, 0x0;
     string32 slot2DisplayName: 0x67E3B50, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x908, 0x30, 0x0;
@@ -217,7 +220,8 @@ startup
 
 start
 {
-    if (current.isGameReady == 1 && (current.Movement > 0 && old.Movement == 0 || current.Movement < -0 && old.Movement == 0 || current.LastUpdateRotationZ > 0.0f  && old.LastUpdateRotationZ == 0.0f)) {
+    if (current.isGameReady == 1 && (current.MovementX != 0 && old.MovementX == 0 || current.MovementY != 0 && old.MovementY == 0 || current.MovementZ != 0 && old.MovementZ == 0 || 
+    current.CamPitch != old.CamPitch  || current.CamYaw != old.CamYaw)) {
         vars.ResetRunPersistentVariables();
         return true;
     }
@@ -233,14 +237,6 @@ reset
     // 803705 is the fname index of the main menu map
     if (current.uWorldFNameIndex != old.uWorldFNameIndex && vars.GetNameFromFName(current.uWorldFNameIndex, 0).ToLower() == "mainmenu") {
         return true;
-    }
-}
-
-update
-{
-    if(current.Movement != 0)
-    {
-        print(current.Movement.ToString());
     }
 }
 
