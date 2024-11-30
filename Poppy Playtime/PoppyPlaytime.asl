@@ -227,6 +227,11 @@ start
     }
 }
 
+onStart
+{
+    vars.ResetRunPersistentVariables();
+}
+
 isLoading
 {
     return current.isLoaded == 0 && old.isLoaded != 0 || current.isPaused == 3;
@@ -246,7 +251,7 @@ split
         return false;
     }
 
-    if (settings["Left Hand"] && !vars.hasPickedUpLeftHand && (int) current.hasLeftHand == 256) {
+    if (settings["Left Hand"] && !vars.hasPickedUpLeftHand && (int) current.hasLeftHand == 257) {
         if (settings["Debug"]) {
             print("Left Hand Split");
         }
