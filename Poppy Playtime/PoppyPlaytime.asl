@@ -1,43 +1,91 @@
 state("Poppy_Playtime-Win64-Shipping")
 {
-    int isLoaded: 0x67E8FE0;
     int isPaused: 0x67E37E4;
+}
 
-    int hasLeftHand: 0x67E3B50, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x920;
-    int hasRightHand: 0x67E3B50, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x921;
-    int isGameReady: 0x67E3B50, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x8A0;
+startup
+{
+	Assembly.Load(File.ReadAllBytes("Components/asl-help")).CreateInstance("Basic");
 
-    int inventorySize: 0x67E3B50, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x910;
+    // Any% Settings
+    settings.Add("Chapter 1", true);
+    settings.Add("Any%", true, "General Any% settings.", "Chapter 1");
+    settings.CurrentDefaultParent = "Any%";
+    settings.Add("Security VHS", true);
+    settings.Add("Insert Security VHS", true);
+    settings.Add("Left Hand", true);
+    settings.Add("Simon Room Key", true, "Power Room Key");
+    settings.Add("Blue Key", true, "Storage Key 1");
+    settings.Add("Red Key", true, "Storage Key 2");
+    settings.Add("Green Key", true, "Storage Key 3");
+    settings.Add("Yellow Key", true, "Storage Key 4");
+    settings.Add("Right Hand", true);
+    settings.Add("Scanner Doll", true);
+    settings.Add("Insert Scanner Doll", true);
 
-    int MovementX: 0x67E6430, 0x1B8, 0x38, 0x0, 0x30, 0x2D0, 0x320, 0x2E8;
-    int MovementY: 0x67E6430, 0x1B8, 0x38, 0x0, 0x30, 0x2D0, 0x320, 0x2F0;
-    int MovementZ: 0x67E6430, 0x1B8, 0x38, 0x0, 0x30, 0x2D0, 0x320, 0x2F8;
-    float CamPitch: 0x67E6430, 0x1B8, 0x38, 0x0, 0x30, 0x308;
-    float CamYaw: 0x67E6430, 0x1B8, 0x38, 0x0, 0x30, 0x310;
+    // All Tapes Settings
+    settings.Add("All Tapes", false, "All Tapes Category Settings.", "Chapter 1");
+    settings.CurrentDefaultParent = "All Tapes";
+    settings.Add("Lobby VHS", false);
+    settings.Add("Insert Lobby VHS", false);
+    settings.Add("Storage VHS", false);
+    settings.Add("Insert Storage VHS", false);
+    settings.Add("Machine VHS", false);
+    settings.Add("Insert Machine VHS", false);
+    settings.Add("Silo VHS", false);
+    settings.Add("Insert Silo VHS", false);
 
-    string32 slot1DisplayName: 0x67E3B50, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x908, 0x8, 0x0;
-    string32 slot2DisplayName: 0x67E3B50, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x908, 0x30, 0x0;
-    string32 slot3DisplayName: 0x67E3B50, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x908, 0x58, 0x0;
-    string32 slot4DisplayName: 0x67E3B50, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x908, 0x80, 0x0;
-    string32 slot5DisplayName: 0x67E3B50, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x908, 0xA8, 0x0;
-    string32 slot6DisplayName: 0x67E3B50, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x908, 0xD0, 0x0;
-    string32 slot7DisplayName: 0x67E3B50, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x908, 0xF8, 0x0;
-    string32 slot8DisplayName: 0x67E3B50, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x908, 0x118, 0x0;
-    string32 slot9DisplayName: 0x67E3B50, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x908, 0x148, 0x0;
-    string32 slot10DisplayName: 0x67E3B50, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x908, 0x170, 0x0;
-    string32 slot11DisplayName: 0x67E3B50, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x908, 0x198, 0x0;
-
-    // PoppyDoorCase_C pointer location : 0x065EA1C0, 0x88, 0x08, 0x128, 0x098, 0x750, 0x278;
-
-    // As soon as the door case opening animation timeline has completed we can split
-    //float isEndCaseDoorOpening: 0x67E6430, 0x88, 0x8, 0x128, 0x98, 0x750, 0x278, 0xB8;
-
-    // UWorld pointer location : 0x67E6430, 0x0;
-    int uWorldFNameIndex: 0x67E6430, 0x18;
+    settings.CurrentDefaultParent = null;
+    settings.Add("Debug", false, "Debug Splits");
 }
 
 init
 {
+	IntPtr gWorld = vars.Helper.ScanRel(3, "48 8B 1D ???????? 48 85 DB 74 ?? 41 B0 01");
+	IntPtr gEngine = vars.Helper.ScanRel(3, "48 8B 0D ???????? 66 0F 5A C9 E8");
+	IntPtr fNames = vars.Helper.ScanRel(7, "8B D9 74 ?? 48 8D 15 ???????? EB");
+	IntPtr gSyncLoad = vars.Helper.ScanRel(21, "33 C0 0F 57 C0 F2 0F 11 05");
+	
+	if (gWorld == IntPtr.Zero || gEngine == IntPtr.Zero)
+	{
+		const string Msg = "Not all required addresses could be found by scanning.";
+		throw new Exception(Msg);
+	}
+	
+	vars.Helper["isLoading"] = vars.Helper.Make<bool>(gSyncLoad);
+
+	vars.Helper["Level"] = vars.Helper.MakeString(gEngine, 0xAF8, 0x0);
+	
+	vars.Helper["localPlayer"] = vars.Helper.Make<ulong>(gEngine, 0xFC0, 0x38, 0x0, 0x30, 0x18);
+	vars.Helper["localPlayer"].FailAction = MemoryWatcher.ReadFailAction.SetZeroOrNull;
+	
+	vars.Helper["acknowledgePawn"] = vars.Helper.Make<ulong>(gEngine, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x18);
+	vars.Helper["acknowledgePawn"].FailAction = MemoryWatcher.ReadFailAction.SetZeroOrNull;
+	
+	vars.Helper["gameReady"] = vars.Helper.Make<byte>(gEngine, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x8A0);
+	
+	vars.Helper["X"] = vars.Helper.Make<int>(gEngine, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x128);
+	vars.Helper["Y"] = vars.Helper.Make<int>(gEngine, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x130);
+	vars.Helper["Z"] = vars.Helper.Make<int>(gEngine, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x138);
+	vars.Helper["Yaw"] = vars.Helper.Make<int>(gEngine, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x148);
+
+    vars.Helper["hasLeftHand"] = vars.Helper.Make<int>(gEngine, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x921);
+    vars.Helper["hasRightHand"] = vars.Helper.Make<int>(gEngine, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x920);
+
+    vars.Helper["inventorySize"] = vars.Helper.Make<int>(gEngine, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x910);
+
+    vars.Helper["slot1DisplayName"] = vars.Helper.MakeString(gEngine, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x908, 0x8, 0x0);
+    vars.Helper["slot2DisplayName"] = vars.Helper.MakeString(gEngine, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x908, 0x30, 0x0);
+    vars.Helper["slot3DisplayName"] = vars.Helper.MakeString(gEngine, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x908, 0x58, 0x0);
+    vars.Helper["slot4DisplayName"] = vars.Helper.MakeString(gEngine, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x908, 0x80, 0x0);
+    vars.Helper["slot5DisplayName"] = vars.Helper.MakeString(gEngine, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x908, 0xA8, 0x0);
+    vars.Helper["slot6DisplayName"] = vars.Helper.MakeString(gEngine, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x908, 0xD0, 0x0);
+    vars.Helper["slot7DisplayName"] = vars.Helper.MakeString(gEngine, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x908, 0xF8, 0x0);
+    vars.Helper["slot8DisplayName"] = vars.Helper.MakeString(gEngine, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x908, 0x118, 0x0);
+    vars.Helper["slot9DisplayName"] = vars.Helper.MakeString(gEngine, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x908, 0x148, 0x0);
+    vars.Helper["slot10DisplayName"] = vars.Helper.MakeString(gEngine, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x908, 0x170, 0x0);
+    vars.Helper["slot11DisplayName"] = vars.Helper.MakeString(gEngine, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x908, 0x198, 0x0);
+	
     /*
      * While moving around the level the hand flags are flipped at certain places. 
      * I believe this is due to the level streaming and possibly a bug with the PlayerBP prefab.
@@ -159,69 +207,60 @@ init
         vars.currentInventory = new List<string>();
     });
 
-    vars.GetFNamePool = (Func<IntPtr>) (() => {	
-        var scanner = new SignatureScanner(game, modules.First().BaseAddress, (int)modules.First().ModuleMemorySize);
-        var pattern = new SigScanTarget("74 09 48 8D 15 ?? ?? ?? ?? EB 16");
-        var gameOffset = scanner.Scan(pattern);
-        if (gameOffset == IntPtr.Zero) return IntPtr.Zero;
-        int offset = game.ReadValue<int>((IntPtr)gameOffset+0x5);
-        return (IntPtr)gameOffset+offset+0x9;
+	vars.FNameToString = (Func<ulong, string>)(fName =>
+	{
+		var nameIdx  = (fName & 0x000000000000FFFF) >> 0x00;
+		var chunkIdx = (fName & 0x00000000FFFF0000) >> 0x10;
+		var number   = (fName & 0xFFFFFFFF00000000) >> 0x20;
+
+		IntPtr chunk = vars.Helper.Read<IntPtr>(fNames + 0x10 + (int)chunkIdx * 0x8);
+		IntPtr entry = chunk + (int)nameIdx * sizeof(short);
+
+		int length = vars.Helper.Read<short>(entry) >> 6;
+		string name = vars.Helper.ReadString(length, ReadStringType.UTF8, entry + sizeof(short));
+
+		return number == 0 ? name : name + "_" + number;
 	});
+	
+	vars.FNameToShortString = (Func<ulong, string>)(fName =>
+	{
+		string name = vars.FNameToString(fName);
 
-    vars.FNamePool = vars.GetFNamePool();
+		int dot = name.LastIndexOf('.');
+		int slash = name.LastIndexOf('/');
 
-    vars.GetNameFromFName = (Func<int, int, string>) ( (key,partial) => {
-        int chunkOffset = key >> 16;
-        int nameOffset = (ushort)key;
-        IntPtr namePoolChunk = memory.ReadValue<IntPtr>((IntPtr)vars.FNamePool + (chunkOffset+2) * 0x8);
-        Int16 nameEntry = game.ReadValue<Int16>((IntPtr)namePoolChunk + 2 * nameOffset);
-        int nameLength = nameEntry >> 6;
-        if (partial == 0) {
-            return game.ReadString((IntPtr)namePoolChunk + 2 * nameOffset + 2, nameLength);
-        } else {
-            return game.ReadString((IntPtr)namePoolChunk + 2 * nameOffset + 2, nameLength)+"_"+partial.ToString();
-        }
+		return name.Substring(Math.Max(dot, slash) + 1);
+	});
+	
+	vars.FNameToShortString2 = (Func<ulong, string>)(fName =>
+	{
+		string name = vars.FNameToString(fName);
+
+		int under = name.LastIndexOf('_');
+
+		return name.Substring(0, under + 1);
 	});
 }
 
-startup
+update
 {
-    // Any% Settings
-    settings.Add("Chapter 1", true);
-    settings.Add("Any%", true, "General Any% settings.", "Chapter 1");
-    settings.CurrentDefaultParent = "Any%";
-    settings.Add("Security VHS", true);
-    settings.Add("Insert Security VHS", true);
-    settings.Add("Left Hand", true);
-    settings.Add("Simon Room Key", true, "Power Room Key");
-    settings.Add("Blue Key", true, "Storage Key 1");
-    settings.Add("Red Key", true, "Storage Key 2");
-    settings.Add("Green Key", true, "Storage Key 3");
-    settings.Add("Yellow Key", true, "Storage Key 4");
-    settings.Add("Right Hand", true);
-    settings.Add("Scanner Doll", true);
-    settings.Add("Insert Scanner Doll", true);
+	//Uncomment debug information in the event of an update.
+	//print(modules.First().ModuleMemorySize.ToString());
+	
+	vars.Helper.Update();
+	vars.Helper.MapPointers();
 
-    // All Tapes Settings
-    settings.Add("All Tapes", false, "All Tapes Category Settings.", "Chapter 1");
-    settings.CurrentDefaultParent = "All Tapes";
-    settings.Add("Lobby VHS", false);
-    settings.Add("Insert Lobby VHS", false);
-    settings.Add("Storage VHS", false);
-    settings.Add("Insert Storage VHS", false);
-    settings.Add("Machine VHS", false);
-    settings.Add("Insert Machine VHS", false);
-    settings.Add("Silo VHS", false);
-    settings.Add("Insert Silo VHS", false);
-
-    settings.CurrentDefaultParent = null;
-    settings.Add("Debug", false, "Debug Splits");
+    // vars.Log("Localplayer?: " + vars.FNameToShortString2(current.localPlayer));
+    // vars.Log("Localplayer?: " + vars.FNameToShortString2(current.acknowledgePawn));
+	
+	//print(vars.FNameToShortString(current.Inv1));
 }
 
 start
 {
-    if (current.isGameReady == 1 && (current.MovementX != 0 && old.MovementX == 0 || current.MovementY != 0 && old.MovementY == 0 || current.MovementZ != 0 && old.MovementZ == 0 || 
-    current.CamPitch != old.CamPitch  || current.CamYaw != old.CamYaw)) {
+    if(current.X != -1073741824 && old.X == -1073741824 || current.gameReady == 1 && current.Y != -536870912 && old.Y == -536870912 || current.gameReady == 1 && current.Z != -1850441728 && old.Z == -1850441728 || 
+    current.gameReady == 1 && current.Yaw != 0 && old.Yaw == 0)
+    {
         vars.ResetRunPersistentVariables();
         return true;
     }
@@ -232,26 +271,15 @@ onStart
     vars.ResetRunPersistentVariables();
 }
 
-isLoading
-{
-    return current.isLoaded == 1 || current.isPaused == 3;
-}
-
-reset
-{
-    // 803705 is the fname index of the main menu map
-    if (current.uWorldFNameIndex != old.uWorldFNameIndex && vars.GetNameFromFName(current.uWorldFNameIndex, 0).ToLower() == "mainmenu") {
-        return true;
-    }
-}
-
 split
 {
-    if (current.isLoaded == 0 || current.isPaused == 3) {
+    if(current.isLoading)
+    {
         return false;
     }
 
-    if (settings["Left Hand"] && !vars.hasPickedUpLeftHand && (int) current.hasLeftHand == 257) {
+    if (settings["Left Hand"] && !vars.hasPickedUpLeftHand && (int) current.hasLeftHand == 1)
+    {
         if (settings["Debug"]) {
             print("Left Hand Split");
         }
@@ -260,23 +288,16 @@ split
         return true;
     }
 
-    if (settings["Right Hand"] && !vars.hasPickedUpRightHand && (int) current.hasRightHand == 1) {
-        if (settings["Debug"]) {
+    if (settings["Right Hand"] && !vars.hasPickedUpRightHand && (int) current.hasRightHand == 257)
+    {
+        if (settings["Debug"])
+        {
             print("Right Hand Split");
         }
 
         vars.hasPickedUpRightHand = true;
         return true;
     }
-
-    // TODO: Only do the final split after door is completely open
-    // if (old.isEndCaseDoorOpening != 6 && current.isEndCaseDoorOpening == 6) {
-    //     if (settings["Debug"]) {
-    //         print("Poppy Case Door Opened");
-    //     }
-
-    //     return true;
-    // }
 
     if (current.inventorySize > old.inventorySize) {
         // Add the item to the player inventory
@@ -437,4 +458,14 @@ split
             }
         }
     }
+}
+
+isLoading
+{
+	return vars.FNameToShortString2(current.localPlayer) != "BP_PoppyPlayerController_C_" || vars.FNameToShortString2(current.acknowledgePawn) != "PlayerBP_" || current.gameReady != 1 || current.isLoading || current.isPaused == 3; 
+}
+
+reset
+{
+    return current.Level == "/Game/Levels/MainMenu";
 }
