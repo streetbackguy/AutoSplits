@@ -1,0 +1,37 @@
+<Settings>
+
+  <Setting Label="Chapter 1">
+
+    <Setting Label="Items">
+      <Setting State="true"  Id="+ Left Hand"    Label="Left Hand" />
+      <Setting State="true"  Id="+ Right Hand"   Label="Right Hand" />
+      <Setting State="true"  Id="+ ScannerD" Label="Scanner Doll" />
+      <Setting State="true"  Id="- ScannerD" Label="Insert Scanner Doll" />
+    </Setting>
+
+    <Setting Label="Keys">
+      <Setting State="true"  Id="+ SimonRoo" Label="Power Room Key" />
+      <Setting State="true"  Id="+ Blue"       Label="Storage Key 1" />
+      <Setting State="true"  Id="+ Red"        Label="Storage Key 2" />
+      <Setting State="true"  Id="+ Green"      Label="Storage Key 3" />
+      <Setting State="true"  Id="+ Yellow"     Label="Storage Key 4" />
+    </Setting>
+
+    <Setting Label="Tapes">
+      <Setting State="true"  Id="+ VHSSecur" Label="Security VHS" />
+      <Setting State="true"  Id="- VHSSecur" Label="Insert Security VHS" />
+      <Setting State="false" Id="+ VHSLobby"    Label="Lobby VHS" />
+      <Setting State="false" Id="- VHSLobby"    Label="Insert Lobby VHS" />
+      <Setting State="false" Id="+ VHSStora"  Label="Storage VHS" />
+      <Setting State="false" Id="- VHSStora"  Label="Insert Storage VHS" />
+      <Setting State="false" Id="+ VHSMachi"  Label="Machine VHS" />
+      <Setting State="false" Id="- VHSMachi"  Label="Insert Machine VHS" />
+      <Setting State="false" Id="+ VHSSilo"     Label="Silo VHS" />
+      <Setting State="false" Id="- VHSSilo"     Label="Insert Silo VHS" />
+    </Setting>
+
+  </Setting>
+
+  <Setting State="false" Id="dbg" Label="Debug" />
+
+</Settings>
