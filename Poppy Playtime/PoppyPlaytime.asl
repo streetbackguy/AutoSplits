@@ -133,7 +133,7 @@ update
 
 start
 {
-    return old.X == -1073741824 && current.X != -1073741824
+    return current.GameReady == 1 && old.X == -1073741824 && current.X != -1073741824
         || current.GameReady == 1 && old.Y == -536870912 && current.Y != -536870912
         || current.GameReady == 1 && old.Z == -1850441728 && current.Z != -1850441728
         || current.GameReady == 1 && old.Yaw == 0 && current.Yaw != 0;
