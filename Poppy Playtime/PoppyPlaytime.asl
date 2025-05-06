@@ -27,11 +27,6 @@ startup
     vars.CompletedSplits = new HashSet<string>();
 }
 
-onStart
-{
-    vars.CompletedSplits.Clear();
-}
-
 init
 {
     string MD5Hash;
@@ -288,11 +283,11 @@ update
 
     current.Inventory = vars.GetInventory();
 
-    // vars.Log("LocalPlayer?: " + vars.FNameToString(current.LocalPlayer));
-    // vars.Log("Pawn?: " + vars.FNameToString(current.AcknowledgedPawn));
+    vars.Log("LocalPlayer?: " + vars.FNameToString(current.LocalPlayer));
+    vars.Log("Pawn?: " + vars.FNameToString(current.AcknowledgedPawn));
     // vars.Log("LocalPlayer?: " + vars.FNameToString2(current.LocalPlayer));
     // vars.Log("Pawn?: " + vars.FNameToString2(current.AcknowledgedPawn));
-    // vars.Log("Level?: " + current.Level);
+    vars.Log("Level?: " + current.Level);
 }
 
 start
@@ -301,6 +296,11 @@ start
         || current.GameReady == 1 && current.Y != -0.171082004904747 && old.Y == -0.171082004904747
         || current.GameReady == 1 && current.Z != 90.1499981177039 && old.Z == 90.1499981177039
         || current.GameReady == 1 && current.Yaw != 0 && old.Yaw == 0;
+}
+
+onStart
+{
+    vars.CompletedSplits.Clear();
 }
 
 split
