@@ -1,21 +1,17 @@
 state("Playtime_Prototype4-Win64-Shipping", "1.0")
 {
-    int IsPaused: 0x4303360, 0x118, 0x2B8;
 }
 
 state("Poppy_Playtime-Win64-Shipping", "1.1")
 {
-    int IsPaused: 0x42D6550, 0x20, 0x18, 0x60, 0xBC;
 }
 
 state("Poppy_Playtime-Win64-Shipping", "1.2")
 {
-    int IsPaused: 0x4A7DF74;
 }
 
 state("Poppy_Playtime-Win64-Shipping", "1.3")
 {
-    int IsPaused: 0x67E37E4;
 }
 
 startup
@@ -104,6 +100,9 @@ init
         vars.Helper["HasLeftHand"] = vars.Helper.Make<bool>(gEngineUE4, 0xDE8, 0x38, 0x0, 0x30, 0x260, 0x70A);
         vars.Helper["HasRightHand"] = vars.Helper.Make<bool>(gEngineUE4, 0xDE8, 0x38, 0x0, 0x30, 0x260, 0x709);
 
+        // GEngine.GameViewport.World.PersistentLevel.WorldSettings.PauserPlayerState.Name
+        vars.Helper["PauseMenu"] = vars.Helper.Make<bool>(gEngineUE4, 0x780, 0x78, 0x30, 0x258, 0x370);
+
         // GWorld.StreamingLevels[1].LoadedLevel.
         vars.Helper["isEndCaseDoorOpening"] = vars.Helper.Make<int>(gWorldUE4, 0x88, 0x8, 0x128, 0x98, 0x760, 0x278, 0xB1);
 
@@ -141,6 +140,8 @@ init
         vars.Helper["HasLeftHand"] = vars.Helper.Make<bool>(gEngineUE4, 0xDE8, 0x38, 0x0, 0x30, 0x260, 0x70A);
         vars.Helper["HasRightHand"] = vars.Helper.Make<bool>(gEngineUE4, 0xDE8, 0x38, 0x0, 0x30, 0x260, 0x709);
 
+        vars.Helper["PauseMenu"] = vars.Helper.Make<bool>(gEngineUE4, 0x780, 0x78, 0x30, 0x258, 0x370);
+
         vars.Helper["isEndCaseDoorOpening"] = vars.Helper.Make<int>(gWorldUE4, 0x88, 0x8, 0x128, 0x98, 0x760, 0x278, 0xB1);
 
         vars.GetInventory = (Func<string[]>)(() =>
@@ -176,6 +177,8 @@ init
 
         vars.Helper["HasLeftHand"] = vars.Helper.Make<bool>(gEngineUE4, 0xD28, 0x38, 0x0, 0x30, 0x260, 0x70A);
         vars.Helper["HasRightHand"] = vars.Helper.Make<bool>(gEngineUE4, 0xD28, 0x38, 0x0, 0x30, 0x260, 0x709);
+
+        vars.Helper["PauseMenu"] = vars.Helper.Make<bool>(gEngineUE4, 0x780, 0x78, 0x30, 0x258, 0x370);
 
         vars.Helper["isEndCaseDoorOpening"] = vars.Helper.Make<int>(gWorldUE4, 0x88, 0x8, 0x128, 0x98, 0x760, 0x278, 0xB1);
 
@@ -219,6 +222,9 @@ init
         vars.Helper["HasLeftHand"] = vars.Helper.Make<bool>(gEngineUE5, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x921);
         // GEngine.GameInstance.LocalPlayers[0].PlayerController.Character.hasRightHand?
         vars.Helper["HasRightHand"] = vars.Helper.Make<bool>(gEngineUE5, 0xFC0, 0x38, 0x0, 0x30, 0x2E0, 0x920);
+
+        // GEngine.GameViewport.World.PersistentLevel.WorldSettings.PauserPlayerState.Name
+        vars.Helper["PauseMenu"] = vars.Helper.Make<bool>(gEngineUE5, 0x9B8, 0x78, 0x30, 0x298, 0x488);
 
         // GEngine.GameInstance.LocalPlayers[0].PlayerController.Character.Stored Inventory
         vars.GetInventory = (Func<string[]>)(() =>
@@ -274,6 +280,8 @@ init
 
         return name.Substring(Math.Max(dot, slash) + 1);
     });
+
+    current.Checkpoint = "";
 }
 
 update
@@ -283,11 +291,11 @@ update
 
     current.Inventory = vars.GetInventory();
 
-    vars.Log("LocalPlayer?: " + vars.FNameToString(current.LocalPlayer));
-    vars.Log("Pawn?: " + vars.FNameToString(current.AcknowledgedPawn));
+    // vars.Log("LocalPlayer?: " + vars.FNameToString(current.LocalPlayer));
+    // vars.Log("Checkpoint?: " + current.C1Checkpoint);
     // vars.Log("LocalPlayer?: " + vars.FNameToString2(current.LocalPlayer));
     // vars.Log("Pawn?: " + vars.FNameToString2(current.AcknowledgedPawn));
-    vars.Log("Level?: " + current.Level);
+    // vars.Log("Level?: " + current.Level);
 }
 
 start
@@ -355,12 +363,12 @@ isLoading
             || vars.FNameToString2(current.AcknowledgedPawn) != "PlayerBP"
             || current.GameReady != 1
             || current.IsLoading
-            || current.IsPaused == 3;
+            || current.PauseMenu;
     } else {
         return vars.FNameToString(current.LocalPlayer) != "PlayerController"
             || vars.FNameToString(current.AcknowledgedPawn) != "PlayerBP"
             || current.GameReady != 1
             || current.IsLoading
-            || current.IsPaused == 1;
+            || current.PauseMenu;
     }
 }
