@@ -12,7 +12,7 @@ state("Poppy_Playtime-Win64-Shipping", "1.2")
 
 state("Poppy_Playtime-Win64-Shipping", "1.3")
 {
-    int PauseMenu: 0x67E37E4;
+    int Paused: 0x67E37E4;
 }
 
 startup
@@ -364,7 +364,7 @@ isLoading
             || vars.FNameToString2(current.AcknowledgedPawn) != "PlayerBP"
             || current.GameReady != 1
             || current.IsLoading
-            || current.PauseMenu == 3;
+            || current.Paused == 3;
     } else {
         return vars.FNameToString(current.LocalPlayer) != "PlayerController"
             || vars.FNameToString(current.AcknowledgedPawn) != "PlayerBP"
